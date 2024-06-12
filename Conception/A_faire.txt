@@ -1,3 +1,7 @@
 - Refaire le diagramme de classes sur Draw.io
 	- remplacer les vachar avec les String (car représente java contrairement au diagramme ER qui représente la base de données)
 	- ajouter les méthodes
+	
+Corrections 
+
+	
