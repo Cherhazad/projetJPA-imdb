@@ -1,7 +1,17 @@
 package Application;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+import Application.Entites.Acteur;
+import Application.Entites.Film;
+import Application.Entites.Genre;
+import Application.Entites.Langue;
+import Application.Entites.Lieu;
+import Application.Entites.Pays;
+import Application.Entites.Realisateur;
+import Application.Entites.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -10,22 +20,59 @@ import jakarta.persistence.Persistence;
 public class connexionApp {
 
 	public static void main(String[] args) {
-		
+
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("appMovie");
 		EntityManager em = emf.createEntityManager();
-		
+
 		EntityTransaction transaction = em.getTransaction();
-		
+
 		transaction.begin();
+
+		// Insertion d'un lieu
+		Lieu lieu1 = new Lieu("rue de la faillette", "Paris", "New York", "Nouvelle-Zelande-Et-Alors");
+
+		// Insertion de genres
+		Genre genre1 = new Genre("hgfc24", "Thriller");
+		em.persist(genre1);
+
+		// Insertion de langues
+		Langue langue1 = new Langue("hfs153", "Grec");
+		em.persist(langue1);
+
+		// Insertion de pays
+		Pays pays1 = new Pays("154DTFD56", "Laponie", "/laponie.fr");
+		em.persist(pays1);
 		
-		
+		// Insertion de films
+		Film film1 = new Film("jhf46HGD", "Insterstellar", 2016, 10.00, "hgfc/hgv:hjgf",
+				"magnifique film SF qui fait réfléchir sur la relativité du temps et les décisions à prendre dans la vie.");
+		//film1.setGenres(genre1);
+		film1.setLangues(langue1);
+		film1.setLieux(lieu1);
+	
+		Film film2 = new Film("sswd165", "Inception", 2014, 10.00, "hgfc/hgv:hjgf", "thriller psychologique interessant");
+		em.persist(film1);
+		em.persist(film2);
+
+		// Insertion de réalisateurs
+		Realisateur realisateur1 = new Realisateur("hgv166", "Tim Burton", LocalDate.of(1900, 8, 31),
+				"/timleplusbô.fr");
+		realisateur1.setLieux(lieu1);
+		em.persist(realisateur1);
+
+		// Insertion d'acteurs
 		Acteur acteur1 = new Acteur("1", "Blabla Blablou", LocalDate.of(2019, 10, 18), 1.70, ":/jnkjnlj");
+		acteur1.setLieux(lieu1);
+		acteur1.setFilms(new HashSet<>(Set.of(film1)));
+		acteur1.getFilms().add(film1);
 		em.persist(acteur1);
-		System.out.println(acteur1);
-		
-		
+
+		// Insertion de roles
+		Role role1 = new Role("Beth Harmon", acteur1, film1);
+		em.persist(role1);
+
 		transaction.commit();
 		em.close();
-		
+
 	}
 }
