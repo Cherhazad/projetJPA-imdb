@@ -1,10 +1,17 @@
 package Application;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,6 +43,32 @@ public class Film {
 	/** resume **/
 	@Column(name = "RESUME")
 	private String resume;
+
+	@ManyToMany
+	@JoinTable(name = "ACTEURS_FILMS", joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_ACTEURS", referencedColumnName = "ID"))
+	private Set<Acteur> acteurs = new HashSet<>();
+
+	@ManyToMany
+	@JoinTable(name = "REALISATEURS_FILMS", joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_REALISATEUR", referencedColumnName = "ID"))
+	private Set<Realisateur> realisateurs = new HashSet<>();
+
+	@ManyToMany
+	@JoinTable(name = "GENRES_FILMS", joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_GENRE", referencedColumnName = "ID"))
+	private Set<Genre> genres = new HashSet<>();
+
+	@ManyToOne
+	@JoinColumn(name = "ID_LANGUE")
+	private Langue langues;
+
+	@ManyToOne
+	@JoinColumn(name = "ID_PAYS")
+	private Pays pays;
+	
+	@OneToMany(mappedBy = "films") 
+	private Set<Role> roles = new HashSet<>();
+
+	@Embedded
+	private Lieu lieux;
 
 	/**
 	 * Constructeur

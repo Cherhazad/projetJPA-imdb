@@ -1,10 +1,16 @@
 package Application;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +25,13 @@ public class Genre {
 	/** nom **/
 	@Column(name = "NOM")
 	private String nom;
+	
+	@ManyToMany
+	@JoinTable(name = "GENRES_FILMS",
+			joinColumns = @JoinColumn(name="ID_GENRE", referencedColumnName="ID"),
+			inverseJoinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName="ID")
+	)
+	private Set<Film> films = new HashSet<>();
 
 	/**
 	 * Constructeur

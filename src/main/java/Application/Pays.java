@@ -1,10 +1,14 @@
 package Application;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +27,9 @@ public class Pays {
 	/** url **/
 	@Column(name = "URL")
 	private String url;
+	
+	@OneToMany(mappedBy = "pays")
+	private Set<Film> films = new HashSet<>();
 
 	/**
 	 * Constructeur
@@ -39,7 +46,6 @@ public class Pays {
 	 * @param url
 	 */
 	public Pays(String id, String nom, String url) {
-		super();
 		this.id = id;
 		this.nom = nom;
 		this.url = url;

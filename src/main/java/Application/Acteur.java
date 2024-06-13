@@ -1,12 +1,17 @@
 package Application;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,6 +38,21 @@ public class Acteur {
 	/** url **/
 	@Column(name = "URL")
 	private String url;
+	
+	@ManyToMany
+	@JoinTable(name = "ACTEURS_FILMS",
+			joinColumns = @JoinColumn(name="ID_ACTEURS", referencedColumnName="ID"),
+			inverseJoinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName="ID")
+	)
+	private Set<Film> films = new HashSet<>();
+	
+	@OneToMany(mappedBy = "acteurs") 
+	private Set<Role> roles = new HashSet<>();
+	
+	
+	/** lieux **/
+	@Embedded
+	private Lieu lieux;
 
 	/**
 	 * Constructeur

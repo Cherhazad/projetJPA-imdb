@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +22,14 @@ public class Role {
 	/** personnage **/
 	@Column(name = "PERSONNAGE")
 	private String personnage;
+	
+	@ManyToOne
+	@JoinColumn(name = "ID_ACTEUR")
+	private Acteur acteurs;
+	
+	@ManyToOne
+	@JoinColumn(name = "ID_FILM")
+	private Film films;
 
 	/**
 	 * Constructeur
