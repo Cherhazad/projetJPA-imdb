@@ -17,7 +17,7 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private String id;
+	private int id;
 
 	/** personnage **/
 	@Column(name = "PERSONNAGE")
@@ -52,7 +52,7 @@ public class Role {
 	 * 
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -61,7 +61,7 @@ public class Role {
 	 * 
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

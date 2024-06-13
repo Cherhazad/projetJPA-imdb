@@ -33,14 +33,14 @@ public class Acteur {
 
 	/** taille **/
 	@Column(name = "TAILLE")
-	private String taille; // pas sûre de ce type, faut il retirer le m et et faire des double ?
+	private double taille; // pas sûre de ce type, faut il retirer le m et et faire des double ?
 
 	/** url **/
 	@Column(name = "URL")
 	private String url;
 	
 	@ManyToMany
-	@JoinTable(name = "ACTEURS_FILMS",
+	@JoinTable(name = "CASTING_PRINCIPAL",
 			joinColumns = @JoinColumn(name="ID_ACTEURS", referencedColumnName="ID"),
 			inverseJoinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName="ID")
 	)
@@ -70,7 +70,7 @@ public class Acteur {
 	 * @param taille
 	 * @param url
 	 */
-	public Acteur(String id, String identite, LocalDate dateNaissance, String taille, String url) {
+	public Acteur(String id, String identite, LocalDate dateNaissance, double taille, String url) {
 		super();
 		this.id = id;
 		this.identite = identite;
@@ -138,7 +138,7 @@ public class Acteur {
 	 * 
 	 * @return the taille
 	 */
-	public String getTaille() {
+	public double getTaille() {
 		return taille;
 	}
 
@@ -147,7 +147,7 @@ public class Acteur {
 	 * 
 	 * @param taille the taille to set
 	 */
-	public void setTaille(String taille) {
+	public void setTaille(double taille) {
 		this.taille = taille;
 	}
 

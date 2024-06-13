@@ -45,7 +45,7 @@ public class Film {
 	private String resume;
 
 	@ManyToMany
-	@JoinTable(name = "ACTEURS_FILMS", joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_ACTEURS", referencedColumnName = "ID"))
+	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_ACTEURS", referencedColumnName = "ID"))
 	private Set<Acteur> acteurs = new HashSet<>();
 
 	@ManyToMany
