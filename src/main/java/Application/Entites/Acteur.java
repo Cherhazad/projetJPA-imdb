@@ -167,11 +167,6 @@ public class Acteur {
 		this.url = url;
 	}
 
-	@Override
-	public String toString() {
-		return "Acteur [id=" + id + ", identite=" + identite + "]";
-	}
-
 	/**
 	 * Getter pour films
 	 * 
@@ -209,21 +204,26 @@ public class Acteur {
 	}
 
 	/**
-	 * Getter pour lieux
+	 * Getter pour lieuNaissance
 	 * 
-	 * @return the lieux
+	 * @return the lieuNaissance
 	 */
-	public Lieu getLieux() {
-		return lieux;
+	public Lieu getLieuNaissance() {
+		return lieuNaissance;
 	}
 
 	/**
-	 * Setter pour lieux
+	 * Setter pour lieuNaissance
 	 * 
-	 * @param lieux the lieux to set
+	 * @param lieuNaissance the lieuNaissance to set
 	 */
-	public void setLieux(Lieu lieux) {
-		this.lieux = lieux;
+	public void setLieuNaissance(Lieu lieuNaissance) {
+		this.lieuNaissance = lieuNaissance;
+	}
+
+	@Override
+	public String toString() {
+		return "Acteur [id=" + id + ", identite=" + identite + ", dateNaissance=" + dateNaissance + "]";
 	}
 
 }

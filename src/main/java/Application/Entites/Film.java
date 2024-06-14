@@ -49,9 +49,7 @@ public class Film {
 
 	/** acteurs **/
 	@ManyToMany
-	@JoinTable(name = "CASTING_PRINCIPAL", 
-		joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), 
-		inverseJoinColumns = @JoinColumn(name = "ID_ACTEURS", referencedColumnName = "ID"))
+	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_ACTEURS", referencedColumnName = "ID"))
 	private Set<Acteur> acteurs = new HashSet<>();
 
 	/** realisateurs **/
@@ -73,11 +71,11 @@ public class Film {
 	@ManyToOne
 	@JoinColumn(name = "ID_PAYS")
 	private Pays pays;
-	
+
 	/** roles **/
-	@OneToMany(mappedBy = "films") 
+	@OneToMany(mappedBy = "films")
 	private Set<Role> roles = new HashSet<>();
-	
+
 	/** lieuTournage **/
 	@ManyToOne
 	@JoinColumn(name = "ID_LIEU_TOURNAGE")
@@ -218,107 +216,135 @@ public class Film {
 		this.resume = resume;
 	}
 
-	@Override
-	public String toString() {
-		return "Film [id=" + id + ", nom=" + nom + ", annee=" + annee + ", rating=" + rating + "]";
-	}
-
-	/** Getter pour acteurs
+	/**
+	 * Getter pour acteurs
+	 * 
 	 * @return the acteurs
 	 */
 	public Set<Acteur> getActeurs() {
 		return acteurs;
 	}
 
-	/** Setter pour acteurs
+	/**
+	 * Setter pour acteurs
+	 * 
 	 * @param acteurs the acteurs to set
 	 */
 	public void setActeurs(Set<Acteur> acteurs) {
 		this.acteurs = acteurs;
 	}
 
-	/** Getter pour realisateurs
+	/**
+	 * Getter pour realisateurs
+	 * 
 	 * @return the realisateurs
 	 */
 	public Set<Realisateur> getRealisateurs() {
 		return realisateurs;
 	}
 
-	/** Setter pour realisateurs
+	/**
+	 * Setter pour realisateurs
+	 * 
 	 * @param realisateurs the realisateurs to set
 	 */
 	public void setRealisateurs(Set<Realisateur> realisateurs) {
 		this.realisateurs = realisateurs;
 	}
 
-	/** Getter pour genres
+	/**
+	 * Getter pour genres
+	 * 
 	 * @return the genres
 	 */
 	public Set<Genre> getGenres() {
 		return genres;
 	}
 
-	/** Setter pour genres
+	/**
+	 * Setter pour genres
+	 * 
 	 * @param genres the genres to set
 	 */
 	public void setGenres(Set<Genre> genres) {
 		this.genres = genres;
 	}
 
-	/** Getter pour langues
+	/**
+	 * Getter pour langues
+	 * 
 	 * @return the langues
 	 */
 	public Langue getLangues() {
 		return langues;
 	}
 
-	/** Setter pour langues
+	/**
+	 * Setter pour langues
+	 * 
 	 * @param langues the langues to set
 	 */
 	public void setLangues(Langue langues) {
 		this.langues = langues;
 	}
 
-	/** Getter pour pays
+	/**
+	 * Getter pour pays
+	 * 
 	 * @return the pays
 	 */
 	public Pays getPays() {
 		return pays;
 	}
 
-	/** Setter pour pays
+	/**
+	 * Setter pour pays
+	 * 
 	 * @param pays the pays to set
 	 */
 	public void setPays(Pays pays) {
 		this.pays = pays;
 	}
 
-	/** Getter pour roles
+	/**
+	 * Getter pour roles
+	 * 
 	 * @return the roles
 	 */
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	/** Setter pour roles
+	/**
+	 * Setter pour roles
+	 * 
 	 * @param roles the roles to set
 	 */
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
-	/** Getter pour lieux
-	 * @return the lieux
+	/**
+	 * Getter pour lieuTournage
+	 * 
+	 * @return the lieuTournage
 	 */
-	public Lieu getLieux() {
-		return lieux;
+	public Lieu getLieuTournage() {
+		return lieuTournage;
 	}
 
-	/** Setter pour lieux
-	 * @param lieux the lieux to set
+	/**
+	 * Setter pour lieuTournage
+	 * 
+	 * @param lieuTournage the lieuTournage to set
 	 */
-	public void setLieux(Lieu lieux) {
-		this.lieux = lieux;
+	public void setLieuTournage(Lieu lieuTournage) {
+		this.lieuTournage = lieuTournage;
+	}
+
+	@Override
+	public String toString() {
+		return "Film [id=" + id + ", nom=" + nom + ", annee=" + annee + ", rating=" + rating + "]";
 	}
 
 }

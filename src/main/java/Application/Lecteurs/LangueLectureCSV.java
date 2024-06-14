@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import Application.Entites.Langue;
 import Application.Entites.Pays;
 
 
@@ -18,7 +19,7 @@ public class LangueLectureCSV {
 		Set<Langue> listePays = new HashSet<>();
 
 		// il faudra sûrement extraire les langues du fichier film ou de la table en base de données directement
-		Path path = Paths.get("src/main/resources/langue.csv");
+		Path path = Paths.get("src/main/resources/films.csv");
 		
 		try {
 			List<String> lignes = Files.readAllLines(path);
@@ -31,7 +32,7 @@ public class LangueLectureCSV {
 				p.setNom(elements[0]);
 				p.setUrl(elements[1]);
 			
-				listePays.add(p);
+				//listePays.add(p);
 			}
 			
 		} catch (IOException e) {

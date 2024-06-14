@@ -19,8 +19,9 @@ public class Genre {
 
 	/** id **/
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private String id;
+	private int id;
 
 	/** nom **/
 	@Column(name = "NOM")
@@ -46,8 +47,7 @@ public class Genre {
 	 * @param id
 	 * @param nom
 	 */
-	public Genre(String id, String nom) {
-		super();
+	public Genre(int id, String nom) {
 		this.id = id;
 		this.nom = nom;
 	}
@@ -57,7 +57,7 @@ public class Genre {
 	 * 
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -66,7 +66,7 @@ public class Genre {
 	 * 
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

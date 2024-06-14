@@ -19,7 +19,7 @@ public class GenreLectureCSV {
 		Set<Genre> listePays = new HashSet<>();
 
 		// il faudra sûrement extraire les langues du fichier film ou de la table en base de données directement
-		Path path = Paths.get("src/main/resources/genre.csv");
+		Path path = Paths.get("src/main/resources/films.csv");
 		
 		try {
 			List<String> lignes = Files.readAllLines(path);
@@ -32,7 +32,7 @@ public class GenreLectureCSV {
 				p.setNom(elements[0]);
 				p.setUrl(elements[1]);
 			
-				listePays.add(p);
+				//listePays.add(p);
 			}
 			
 		} catch (IOException e) {

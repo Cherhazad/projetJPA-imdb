@@ -5,6 +5,8 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -15,8 +17,9 @@ public class Langue {
 
 	/** id **/
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private String id;
+	private int id;
 
 	/** nom **/
 	@Column(name = "NOM")
@@ -38,8 +41,7 @@ public class Langue {
 	 * @param id
 	 * @param nom
 	 */
-	public Langue(String id, String nom) {
-		super();
+	public Langue(int id, String nom) {
 		this.id = id;
 		this.nom = nom;
 	}
@@ -49,7 +51,7 @@ public class Langue {
 	 * 
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -58,7 +60,7 @@ public class Langue {
 	 * 
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

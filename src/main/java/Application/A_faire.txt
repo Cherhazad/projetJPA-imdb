@@ -7,3 +7,9 @@
 	- classes/interfaces TODO dans pck Utils
 
 - la javadoc des override toString et des classes 
+
+- dans lieuLecture
+	gérer les lieux à 2, 3 ou 4 élements avec des conditions
+	
+	
+- mettre des conditions de vérification d'existence en base 

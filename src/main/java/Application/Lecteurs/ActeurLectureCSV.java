@@ -37,7 +37,7 @@ public class ActeurLectureCSV {
 				
 				String[] elementsLieu = elements[3].split(",");
 				Lieu lieu = new Lieu(elementsLieu[0], elementsLieu[1], elementsLieu[2], elementsLieu[3]);
-				a.setLieux(lieu);
+				a.setLieuNaissance(lieu);
 				
 				Double taille = Double.parseDouble(elements[4].replace(" m", ""));
 				a.setTaille(taille);
