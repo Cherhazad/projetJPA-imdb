@@ -31,7 +31,6 @@ public class PaysDAO implements GenericDAO<Pays> {
 	@Override
 	public void insert(Pays pays) {
 
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("appMovie");
 		EntityManager em = emf.createEntityManager();
 
 		EntityTransaction transaction = em.getTransaction();
@@ -40,7 +39,6 @@ public class PaysDAO implements GenericDAO<Pays> {
 			transaction.begin();
 			em.persist(pays);
 			transaction.commit();
-			em.close();
 
 		} catch (RuntimeException e) {
 			if (transaction.isActive()) {
@@ -48,7 +46,7 @@ public class PaysDAO implements GenericDAO<Pays> {
 			}
 			throw e;
 		}
-		
+		em.close();
 
 	}
 
