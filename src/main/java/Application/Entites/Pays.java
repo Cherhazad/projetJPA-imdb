@@ -17,8 +17,9 @@ public class Pays {
 
 	/** id **/
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private String id;
+	private int id;
 
 	/** nom **/
 	@Column(name = "NOM")
@@ -27,7 +28,7 @@ public class Pays {
 	/** url **/
 	@Column(name = "URL")
 	private String url;
-	
+
 	@OneToMany(mappedBy = "pays")
 	private Set<Film> films = new HashSet<>();
 
@@ -45,8 +46,7 @@ public class Pays {
 	 * @param nom
 	 * @param url
 	 */
-	public Pays(String id, String nom, String url) {
-		this.id = id;
+	public Pays(String nom, String url) {
 		this.nom = nom;
 		this.url = url;
 	}
@@ -56,7 +56,7 @@ public class Pays {
 	 * 
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -65,7 +65,7 @@ public class Pays {
 	 * 
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -105,23 +105,27 @@ public class Pays {
 		this.url = url;
 	}
 
-	@Override
-	public String toString() {
-		return "Pays [id=" + id + ", nom=" + nom + "]";
-	}
-
-	/** Getter pour films
+	/**
+	 * Getter pour films
+	 * 
 	 * @return the films
 	 */
 	public Set<Film> getFilms() {
 		return films;
 	}
 
-	/** Setter pour films
+	/**
+	 * Setter pour films
+	 * 
 	 * @param films the films to set
 	 */
 	public void setFilms(Set<Film> films) {
 		this.films = films;
+	}
+
+	@Override
+	public String toString() {
+		return "Pays [nom=" + nom + ", url=" + url + "]";
 	}
 
 }
