@@ -1,15 +1,25 @@
 package Application.Entites;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import java.util.HashSet;
+import java.util.Set;
 
-@Embeddable
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "LIEU")
 public class Lieu {
 
-//	/** id **/
-//	@Id
-//	@Column(name = "ID")
-//	private String id;
+	/** id **/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
+	private int id;
 
 	/** rue **/
 	@Column(name = "RUE")
@@ -27,6 +37,18 @@ public class Lieu {
 	@Column(name = "PAYS")
 	private String pays;
 
+	/** realisateurs **/
+	@OneToMany(mappedBy = "lieuNaissance")
+	private Set<Realisateur> realisateurs = new HashSet<>();
+
+	/** acteurs **/
+	@OneToMany(mappedBy = "lieuNaissance")
+	private Set<Acteur> acteurs = new HashSet<>();
+
+	/** films **/
+	@OneToMany(mappedBy = "lieuTournage")
+	private Set<Film> films = new HashSet<>();
+
 	/**
 	 * Constructeur
 	 * 
@@ -37,7 +59,6 @@ public class Lieu {
 	/**
 	 * Constructeur
 	 * 
-	 * @param id
 	 * @param rue
 	 * @param ville
 	 * @param etat
@@ -48,6 +69,24 @@ public class Lieu {
 		this.ville = ville;
 		this.etat = etat;
 		this.pays = pays;
+	}
+
+	/**
+	 * Getter pour id
+	 * 
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * Setter pour id
+	 * 
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
@@ -122,9 +161,63 @@ public class Lieu {
 		this.pays = pays;
 	}
 
+	/**
+	 * Getter pour realisateurs
+	 * 
+	 * @return the realisateurs
+	 */
+	public Set<Realisateur> getRealisateurs() {
+		return realisateurs;
+	}
+
+	/**
+	 * Setter pour realisateurs
+	 * 
+	 * @param realisateurs the realisateurs to set
+	 */
+	public void setRealisateurs(Set<Realisateur> realisateurs) {
+		this.realisateurs = realisateurs;
+	}
+
+	/**
+	 * Getter pour acteurs
+	 * 
+	 * @return the acteurs
+	 */
+	public Set<Acteur> getActeurs() {
+		return acteurs;
+	}
+
+	/**
+	 * Setter pour acteurs
+	 * 
+	 * @param acteurs the acteurs to set
+	 */
+	public void setActeurs(Set<Acteur> acteurs) {
+		this.acteurs = acteurs;
+	}
+
+	/**
+	 * Getter pour films
+	 * 
+	 * @return the films
+	 */
+	public Set<Film> getFilms() {
+		return films;
+	}
+
+	/**
+	 * Setter pour films
+	 * 
+	 * @param films the films to set
+	 */
+	public void setFilms(Set<Film> films) {
+		this.films = films;
+	}
+
 	@Override
 	public String toString() {
-		return "Lieu [rue=" + rue + ", ville=" + ville + ", etat=" + etat + ", pays=" + pays + "]";
+		return "Lieu [id=" + id + ", rue=" + rue + ", ville=" + ville + ", etat=" + etat + ", pays=" + pays + "]";
 	}
 
 }

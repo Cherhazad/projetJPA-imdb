@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -38,21 +38,20 @@ public class Acteur {
 	/** url **/
 	@Column(name = "URL")
 	private String url;
-	
+
+	/** films **/
 	@ManyToMany
-	@JoinTable(name = "CASTING_PRINCIPAL",
-			joinColumns = @JoinColumn(name="ID_ACTEURS", referencedColumnName="ID"),
-			inverseJoinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName="ID")
-	)
+	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_ACTEURS", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"))
 	private Set<Film> films = new HashSet<>();
-	
-	@OneToMany(mappedBy = "acteurs") 
+
+	/** roles **/
+	@OneToMany(mappedBy = "acteurs")
 	private Set<Role> roles = new HashSet<>();
-	
-	
-	/** lieux **/
-	@Embedded
-	private Lieu lieux;
+
+	/** lieuNaissance **/
+	@ManyToOne
+	@JoinColumn(name = "ID_LIEU_NAISSANCE")
+	private Lieu lieuNaissance;
 
 	/**
 	 * Constructeur
@@ -173,42 +172,54 @@ public class Acteur {
 		return "Acteur [id=" + id + ", identite=" + identite + "]";
 	}
 
-	/** Getter pour films
+	/**
+	 * Getter pour films
+	 * 
 	 * @return the films
 	 */
 	public Set<Film> getFilms() {
 		return films;
 	}
 
-	/** Setter pour films
+	/**
+	 * Setter pour films
+	 * 
 	 * @param films the films to set
 	 */
 	public void setFilms(Set<Film> films) {
 		this.films = films;
 	}
 
-	/** Getter pour roles
+	/**
+	 * Getter pour roles
+	 * 
 	 * @return the roles
 	 */
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	/** Setter pour roles
+	/**
+	 * Setter pour roles
+	 * 
 	 * @param roles the roles to set
 	 */
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
-	/** Getter pour lieux
+	/**
+	 * Getter pour lieux
+	 * 
 	 * @return the lieux
 	 */
 	public Lieu getLieux() {
 		return lieux;
 	}
 
-	/** Setter pour lieux
+	/**
+	 * Setter pour lieux
+	 * 
 	 * @param lieux the lieux to set
 	 */
 	public void setLieux(Lieu lieux) {

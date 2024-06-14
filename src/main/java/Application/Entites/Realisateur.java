@@ -5,14 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,18 +33,16 @@ public class Realisateur {
 	/** url **/
 	@Column(name = "URL")
 	private String url;
-	
+
 	/** films **/
 	@ManyToMany
-	@JoinTable(name = "REALISATEURS_FILMS",
-			joinColumns = @JoinColumn(name="ID_REALISATEUR", referencedColumnName="ID"),
-			inverseJoinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName="ID")
-	)
+	@JoinTable(name = "REALISATEURS_FILMS", joinColumns = @JoinColumn(name = "ID_REALISATEUR", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"))
 	private Set<Film> films = new HashSet<>();
-	
-	/** lieux **/
-	@Embedded
-	private Lieu lieux;
+
+	/** lieuNaissance **/
+	@ManyToOne
+	@JoinColumn(name = "ID_LIEU_NAISSANCE")
+	private Lieu lieuNaissance;
 
 	/**
 	 * Constructeur
@@ -62,12 +58,17 @@ public class Realisateur {
 	 * @param identite
 	 * @param dateNaissance
 	 * @param url
+	 * @param films
+	 * @param lieuNaissance
 	 */
-	public Realisateur(String id, String identite, LocalDate dateNaissance, String url) {
+	public Realisateur(String id, String identite, LocalDate dateNaissance, String url, Set<Film> films,
+			Lieu lieuNaissance) {
 		this.id = id;
 		this.identite = identite;
 		this.dateNaissance = dateNaissance;
 		this.url = url;
+		this.films = films;
+		this.lieuNaissance = lieuNaissance;
 	}
 
 	/**
@@ -142,37 +143,45 @@ public class Realisateur {
 		this.url = url;
 	}
 
-	@Override
-	public String toString() {
-		return "Realisateur [id=" + id + ", identite=" + identite + "]";
-	}
-
-	/** Getter pour films
+	/**
+	 * Getter pour films
+	 * 
 	 * @return the films
 	 */
 	public Set<Film> getFilms() {
 		return films;
 	}
 
-	/** Setter pour films
+	/**
+	 * Setter pour films
+	 * 
 	 * @param films the films to set
 	 */
 	public void setFilms(Set<Film> films) {
 		this.films = films;
 	}
 
-	/** Getter pour lieux
-	 * @return the lieux
+	/**
+	 * Getter pour lieuNaissance
+	 * 
+	 * @return the lieuNaissance
 	 */
-	public Lieu getLieux() {
-		return lieux;
+	public Lieu getLieuNaissance() {
+		return lieuNaissance;
 	}
 
-	/** Setter pour lieux
-	 * @param lieux the lieux to set
+	/**
+	 * Setter pour lieuNaissance
+	 * 
+	 * @param lieuNaissance the lieuNaissance to set
 	 */
-	public void setLieux(Lieu lieux) {
-		this.lieux = lieux;
+	public void setLieuNaissance(Lieu lieuNaissance) {
+		this.lieuNaissance = lieuNaissance;
+	}
+
+	@Override
+	public String toString() {
+		return "Realisateur [id=" + id + ", identite=" + identite + ", dateNaissance=" + dateNaissance + "]";
 	}
 
 }

@@ -14,6 +14,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+/**
+ * 
+ */
 @Entity
 @Table(name = "FILM")
 public class Film {
@@ -44,33 +47,41 @@ public class Film {
 	@Column(name = "RESUME")
 	private String resume;
 
+	/** acteurs **/
 	@ManyToMany
 	@JoinTable(name = "CASTING_PRINCIPAL", 
 		joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), 
 		inverseJoinColumns = @JoinColumn(name = "ID_ACTEURS", referencedColumnName = "ID"))
 	private Set<Acteur> acteurs = new HashSet<>();
 
+	/** realisateurs **/
 	@ManyToMany
 	@JoinTable(name = "REALISATEURS_FILMS", joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_REALISATEUR", referencedColumnName = "ID"))
 	private Set<Realisateur> realisateurs = new HashSet<>();
 
+	/** genres **/
 	@ManyToMany
 	@JoinTable(name = "GENRES_FILMS", joinColumns = @JoinColumn(name = "ID_FILM", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ID_GENRE", referencedColumnName = "ID"))
 	private Set<Genre> genres = new HashSet<>();
 
+	/** langues **/
 	@ManyToOne
 	@JoinColumn(name = "ID_LANGUE")
 	private Langue langues;
 
+	/** pays **/
 	@ManyToOne
 	@JoinColumn(name = "ID_PAYS")
 	private Pays pays;
 	
+	/** roles **/
 	@OneToMany(mappedBy = "films") 
 	private Set<Role> roles = new HashSet<>();
-
-	@Embedded
-	private Lieu lieux;
+	
+	/** lieuTournage **/
+	@ManyToOne
+	@JoinColumn(name = "ID_LIEU_TOURNAGE")
+	private Lieu lieuTournage;
 
 	/**
 	 * Constructeur

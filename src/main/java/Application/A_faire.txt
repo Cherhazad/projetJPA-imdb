@@ -6,4 +6,4 @@
 - isoler les lignes de connexions à la base: begin/commit
 	- classes/interfaces TODO dans pck Utils
 
-	
+- la javadoc des override toString et des classes 
