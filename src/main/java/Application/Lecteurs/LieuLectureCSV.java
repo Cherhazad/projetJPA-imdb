@@ -12,7 +12,7 @@ import Application.Entites.Lieu;
 
 public class LieuLectureCSV {
 
-	public static Set<Lieu> lireFichierActeur() {
+	public static Set<Lieu> lireFichier() {
 
 		Set<Lieu> listeLieuActeurs = new HashSet<>();
 
@@ -30,12 +30,32 @@ public class LieuLectureCSV {
 
 				String[] elementsLieu = elements[3].split(",");
 
-				l.setRue(elementsLieu[0]);
-				l.setVille(elementsLieu[1]);
-				l.setEtat(elementsLieu[2]);
-				l.setPays(elementsLieu[3]);
-				
-				//TODO gérer les lieux à 2, 3 ou 4 élements avec des conditions
+
+				switch (elementsLieu.length) {
+
+				case 1:
+					l.setPays(elementsLieu[0]);
+					break;
+
+				case 2:
+					l.setVille(elementsLieu[0]);
+					l.setPays(elementsLieu[1]);
+					break;
+
+				case 3:
+					l.setVille(elementsLieu[0]);
+					l.setEtat(elementsLieu[1]);
+					l.setPays(elementsLieu[2]);
+					break;
+				case 4:
+					l.setQuartier(elementsLieu[0]);
+					l.setVille(elementsLieu[1]);
+					l.setEtat(elementsLieu[2]);
+					l.setPays(elementsLieu[3]);
+					break;
+				default:
+					break;
+				}
 
 				listeLieuActeurs.add(l);
 			}
@@ -45,75 +65,6 @@ public class LieuLectureCSV {
 			e.printStackTrace();
 		}
 		return listeLieuActeurs;
-
-	}
-
-	public static Set<Lieu> lireFichierFilm() {
-
-		Set<Lieu> listeLieuFilms = new HashSet<>();
-
-		Path path = Paths.get("src/main/resources/films.csv");
-
-		try {
-			List<String> lignes = Files.readAllLines(path);
-			lignes.remove(0);
-
-			for (String ligne : lignes) {
-				Lieu l = new Lieu();
-				String[] elements = ligne.split(";");
-
-				l.setId(elements[0]);
-
-				String[] elementsLieu = elements[5].split(",");
-
-				l.setRue(elementsLieu[0]);
-				l.setVille(elementsLieu[1]);
-				l.setEtat(elementsLieu[2]);
-				l.setPays(elementsLieu[3]);
-
-				listeLieuFilms.add(l);
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return listeLieuFilms;
-
-	}
-	
-	
-	public static Set<Lieu> lireFichierRealisateur() {
-
-		Set<Lieu> listeLieuRealisateurs = new HashSet<>();
-
-		Path path = Paths.get("src/main/resources/realisateurs.csv");
-
-		try {
-			List<String> lignes = Files.readAllLines(path);
-			lignes.remove(0);
-
-			for (String ligne : lignes) {
-				Lieu l = new Lieu();
-				String[] elements = ligne.split(";");
-
-				l.setId(elements[0]);
-
-				String[] elementsLieu = elements[3].split(",");
-
-				l.setRue(elementsLieu[0]);
-				l.setVille(elementsLieu[1]);
-				l.setEtat(elementsLieu[2]);
-				l.setPays(elementsLieu[3]);
-
-				listeLieuRealisateurs.add(l);
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return listeLieuRealisateurs;
 
 	}
 

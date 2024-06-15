@@ -23,9 +23,9 @@ public class TraitementDonnees {
 		
 		
 		// Insertion lieux en bd
-		Set<Lieu> listeLieuxActeurs = LieuLectureCSV.lireFichierActeur();
-		Set<Lieu> listeLieuxFilms = LieuLectureCSV.lireFichierFilm();
-		Set<Lieu> listeLieuxRealisateurs = LieuLectureCSV.lireFichierRealisateur();
+		Set<Lieu> listeLieuxActeurs = LieuLectureCSV.lireFichier();
+		//Set<Lieu> listeLieuxFilms = LieuLectureCSV.lireFichierFilm();
+		//Set<Lieu> listeLieuxRealisateurs = LieuLectureCSV.lireFichierRealisateur();
 		
 		LieuDAO lieuDAO = new LieuDAO();
 

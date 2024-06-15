@@ -19,8 +19,8 @@ public class Lieu {
 	private String id;
 
 	/** rue **/
-	@Column(name = "RUE")
-	private String rue;
+	@Column(name = "QUARTIER")
+	private String quartier;
 
 	/** ville **/
 	@Column(name = "VILLE")
@@ -61,8 +61,8 @@ public class Lieu {
 	 * @param etat
 	 * @param pays
 	 */
-	public Lieu(String rue, String ville, String etat, String pays) {
-		this.rue = rue;
+	public Lieu(String quartier, String ville, String etat, String pays) {
+		this.quartier = quartier;
 		this.ville = ville;
 		this.etat = etat;
 		this.pays = pays;
@@ -91,8 +91,8 @@ public class Lieu {
 	 * 
 	 * @return the rue
 	 */
-	public String getRue() {
-		return rue;
+	public String getQuartier() {
+		return quartier;
 	}
 
 	/**
@@ -100,8 +100,8 @@ public class Lieu {
 	 * 
 	 * @param rue the rue to set
 	 */
-	public void setRue(String rue) {
-		this.rue = rue;
+	public void setQuartier(String quartier) {
+		this.quartier = quartier;
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class Lieu {
 
 	@Override
 	public String toString() {
-		return "Lieu [id=" + id + ", rue=" + rue + ", ville=" + ville + ", etat=" + etat + ", pays=" + pays + "]";
+		return "Lieu [id=" + id + ", quartier=" + quartier + ", ville=" + ville + ", etat=" + etat + ", pays=" + pays + "]";
 	}
 
 }
