@@ -23,13 +23,11 @@ public class TraitementDonnees {
 		
 		
 		// Insertion lieux en bd
-		Set<Lieu> listeLieuxActeurs = LieuLectureCSV.lireFichier();
-		//Set<Lieu> listeLieuxFilms = LieuLectureCSV.lireFichierFilm();
-		//Set<Lieu> listeLieuxRealisateurs = LieuLectureCSV.lireFichierRealisateur();
+		Set<Lieu> listeLieux = LieuLectureCSV.lireFichier();
 		
 		LieuDAO lieuDAO = new LieuDAO();
 
-		for (Lieu l : listeLieuxActeurs) {
+		for (Lieu l : listeLieux) {
 			lieuDAO.insert(l);
 		}
 		System.out.println("-----------------------------------------");
