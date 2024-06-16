@@ -9,39 +9,35 @@ import java.util.List;
 import java.util.Set;
 
 import Application.Entites.Langue;
-import Application.Entites.Pays;
-
 
 public class LangueLectureCSV {
 
 	public static Set<Langue> lireFichier() {
-		
-		Set<Langue> listePays = new HashSet<>();
 
-		// il faudra sûrement extraire les langues du fichier film ou de la table en base de données directement
+		Set<Langue> listeLangues = new HashSet<>();
+
 		Path path = Paths.get("src/main/resources/films.csv");
-		
+
 		try {
 			List<String> lignes = Files.readAllLines(path);
 			lignes.remove(0);
-			
+
 			for (String ligne : lignes) {
-				Pays p = new Pays();
+				Langue langue = new Langue();
 				String[] elements = ligne.split(";");
-				
-				p.setNom(elements[0]);
-				p.setUrl(elements[1]);
-			
-				//listePays.add(p);
+				String nomLangue = elements[7].trim();
+
+				if (!nomLangue.isEmpty()) {
+					langue.setNom(nomLangue);
+					listeLangues.add(langue);
+				}
 			}
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return listePays;
-		
-		
+		return listeLangues;
+
 	}
 
 }

@@ -24,7 +24,7 @@ public class Langue {
 	/** nom **/
 	@Column(name = "NOM")
 	private String nom;
-	
+
 	@OneToMany(mappedBy = "langues")
 	private Set<Film> films = new HashSet<>();
 
@@ -41,8 +41,7 @@ public class Langue {
 	 * @param id
 	 * @param nom
 	 */
-	public Langue(int id, String nom) {
-		this.id = id;
+	public Langue(String nom) {
 		this.nom = nom;
 	}
 
@@ -80,6 +79,24 @@ public class Langue {
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+
+	/**
+	 * Getter pour films
+	 * 
+	 * @return the films
+	 */
+	public Set<Film> getFilms() {
+		return films;
+	}
+
+	/**
+	 * Setter pour films
+	 * 
+	 * @param films the films to set
+	 */
+	public void setFilms(Set<Film> films) {
+		this.films = films;
 	}
 
 	@Override
