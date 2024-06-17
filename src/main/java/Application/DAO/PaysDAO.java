@@ -1,7 +1,6 @@
 package Application.DAO;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import Application.Entites.Pays;
@@ -17,12 +16,6 @@ public class PaysDAO implements GenericDAO<Pays> {
 	 * 
 	 */
 	public PaysDAO() {
-	}
-
-	@Override
-	public List<Pays> extraire() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -44,18 +37,6 @@ public class PaysDAO implements GenericDAO<Pays> {
 			throw e;
 		}
 		em.close();
-
-	}
-
-	@Override
-	public void update(int id, Pays nvObjet) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
 
 	}
 

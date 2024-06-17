@@ -1,40 +1,46 @@
 package Application.DAO;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import Application.Entites.Lieu;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
+/**
+ * 
+ */
 public class LieuDAO implements GenericDAO<Lieu> {
 
-	Set<Lieu> listeLieux = new HashSet<>();
+	List<Lieu> listeLieux = new ArrayList<>();
+
+	EntityManager em = emf.createEntityManager();
+	EntityTransaction transaction = em.getTransaction();
 
 	/**
 	 * Constructeur
 	 * 
+	 * @param listeLieux
 	 */
 	public LieuDAO() {
+		this.listeLieux = findAll();
 	}
 
-	@Override
-	public List<Lieu> extraire() {
-		// TODO Auto-generated method stub
-		return null;
+	// requête dans la database
+	public List<Lieu> findAll() {
+		return em.createQuery("select l from Lieu l", Lieu.class).getResultList();
 	}
+	
+	// vérif si existence
+	
 
 	@Override
 	public void insert(Lieu lieu) {
 
-		EntityManager em = emf.createEntityManager();
-
-		EntityTransaction transaction = em.getTransaction();
-
 		try {
 			transaction.begin();
 			em.persist(lieu);
+			listeLieux.add(lieu);
 			transaction.commit();
 
 		} catch (RuntimeException e) {
@@ -44,18 +50,6 @@ public class LieuDAO implements GenericDAO<Lieu> {
 			throw e;
 		}
 		em.close();
-	}
-
-	@Override
-	public void update(int id, Lieu nvObjet) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

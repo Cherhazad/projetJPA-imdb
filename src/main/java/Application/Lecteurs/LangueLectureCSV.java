@@ -8,9 +8,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import Application.DAO.LangueDAO;
+import Application.DAO.LieuDAO;
+import Application.DAO.PaysDAO;
 import Application.Entites.Langue;
+import Application.Utils.DaoLien;
 
 public class LangueLectureCSV {
+	
+	public static final PaysDAO paysDAO = DaoLien.paysDao();
+	public static final LangueDAO langueDAO = DaoLien.langueDao();
+	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
+	
 
 	public static Set<Langue> lireFichier() {
 
@@ -27,7 +36,7 @@ public class LangueLectureCSV {
 				String[] elements = ligne.split(";");
 				String nomLangue = elements[7].trim();
 
-				if (!nomLangue.isEmpty()) {
+				if (!nomLangue.isEmpty() && !langueDAO.ifLangueExists(nomLangue)) {
 					langue.setNom(nomLangue);
 					listeLangues.add(langue);
 				}

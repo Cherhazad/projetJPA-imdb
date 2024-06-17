@@ -3,51 +3,50 @@ package Application.Utils;
 import java.util.Set;
 
 import Application.DAO.LangueDAO;
+import Application.DAO.LieuDAO;
+import Application.DAO.PaysDAO;
 import Application.Entites.Langue;
+import Application.Entites.Lieu;
+import Application.Entites.Pays;
 import Application.Lecteurs.LangueLectureCSV;
+import Application.Lecteurs.LieuLectureCSV;
+import Application.Lecteurs.PaysLectureCSV;
 
 public class TraitementDonnees {
+
+	public static final PaysDAO paysDAO = DaoLien.paysDao();
+	public static final LangueDAO langueDAO = DaoLien.langueDao();
+	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
 
 	public static void main(String[] args) {
 
 		// TODO mettre les conditions d'existence en base de données
 
-//		// Insertion données pays en bd
-//		
+		// Insertion données pays en bd
+
 //		Set<Pays> listePays = PaysLectureCSV.lireFichier();
-//		PaysDAO paysDAO = new PaysDAO();
 //
 //		for (Pays p : listePays) {
 //			paysDAO.insert(p);
 //		}
-//		System.out.println("-----------------------------------------");
-//		System.out.println("Fin insertion des pays en base de données");
 
 		// Insertion lieux en bd
 //		Set<Lieu> listeLieux = LieuLectureCSV.lireFichier();
 //		
-//		LieuDAO lieuDAO = new LieuDAO();
-//
+//		lieuDAO.insert(null);
 //		for (Lieu l : listeLieux) {
 //			lieuDAO.insert(l);
 //		}
-//		System.out.println("-----------------------------------------");
-//		System.out.println("Fin insertion des pays en base de données");
 
 		// Insertion langues en base de données
 
 		Set<Langue> listeLangues = LangueLectureCSV.lireFichier();
 
-		LangueDAO langueDAO = new LangueDAO();
-
 		for (Langue langue : listeLangues) {
-
-			if (!langueDAO.findByName(langue.getNom())) {
-
-				langueDAO.insert(langue);
-			}
+			langueDAO.insert(langue);
 		}
-		System.out.println("-----------------------------------------");
-		System.out.println("Fin insertion des pays en base de données");
 	}
+
+	// Insertion
+
 }
