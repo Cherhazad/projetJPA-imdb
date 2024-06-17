@@ -24,11 +24,11 @@ public class TraitementDonnees {
 
 		// Insertion données pays en bd
 
-//		Set<Pays> listePays = PaysLectureCSV.lireFichier();
-//
-//		for (Pays p : listePays) {
-//			paysDAO.insert(p);
-//		}
+		Set<Pays> listePays = PaysLectureCSV.lireFichier();
+
+		for (Pays p : listePays) {
+			paysDAO.insert(p);
+		}
 
 		// Insertion lieux en bd
 //		Set<Lieu> listeLieux = LieuLectureCSV.lireFichier();
@@ -39,12 +39,12 @@ public class TraitementDonnees {
 //		}
 
 		// Insertion langues en base de données
-
-		Set<Langue> listeLangues = LangueLectureCSV.lireFichier();
-
-		for (Langue langue : listeLangues) {
-			langueDAO.insert(langue);
-		}
+//
+//		Set<Langue> listeLangues = LangueLectureCSV.lireFichier();
+//
+//		for (Langue langue : listeLangues) {
+//			langueDAO.insert(langue);
+//		}
 	}
 
 	// Insertion
