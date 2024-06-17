@@ -3,6 +3,7 @@ package Application.Entites;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +32,9 @@ public class Pays {
 
 	@OneToMany(mappedBy = "pays")
 	private Set<Film> films = new HashSet<>();
+	
+	@OneToMany(mappedBy = "pays", cascade = CascadeType.ALL)
+	private Set<Lieu> lieux = new HashSet<>();
 
 	/**
 	 * Constructeur

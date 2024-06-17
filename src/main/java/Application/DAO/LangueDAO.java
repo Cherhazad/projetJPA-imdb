@@ -67,7 +67,7 @@ public class LangueDAO implements GenericDAO<Langue> {
 				}
 				throw e;
 			}
-			// em.close();
 		}
+		// em.close();
 	}
 }

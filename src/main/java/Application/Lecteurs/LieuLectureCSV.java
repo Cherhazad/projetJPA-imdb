@@ -7,11 +7,17 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import Application.DAO.LieuDAO;
+import Application.DAO.PaysDAO;
 import Application.Entites.Lieu;
+import Application.Entites.Pays;
+import Application.Utils.DaoLien;
 
 public class LieuLectureCSV {
+
+	public static final PaysDAO paysDAO = DaoLien.paysDao();
+	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
 
 	public static Set<Lieu> lireFichier() {
 
@@ -28,38 +34,15 @@ public class LieuLectureCSV {
 			// Acteurs
 
 			for (String ligne : lignesActeurs) {
-				Lieu l = new Lieu();
-				String[] elements = ligne.split(";");
 
-				String[] elementsLieu = elements[3].split(",");
+				Lieu l = splitPays(ligne);
+				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
+						|| (l.getEtat() != null && !l.getEtat().isEmpty())
+						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
 
-				switch (elementsLieu.length) {
-
-				case 1:
-					l.setPays(elementsLieu[0].trim());
-					break;
-
-				case 2:
-					l.setVille(elementsLieu[0].trim());
-					l.setPays(elementsLieu[1].trim());
-					break;
-
-				case 3:
-					l.setVille(elementsLieu[0].trim());
-					l.setEtat(elementsLieu[1].trim());
-					l.setPays(elementsLieu[2].trim());
-					break;
-				case 4:
-					l.setQuartier(elementsLieu[0].trim());
-					l.setVille(elementsLieu[1].trim());
-					l.setEtat(elementsLieu[2].trim());
-					l.setPays(elementsLieu[3].trim());
-					break;
-				default:
-					break;
-				}
-				
-				if(!(elementsLieu == null)) {					
+				if (isValidLieu
+						&& !lieuDAO.ifLieuExists(l)) {
+					lieuDAO.insert(l);
 					listeLieux.add(l);
 				}
 			}
@@ -69,40 +52,18 @@ public class LieuLectureCSV {
 			List<String> lignesRealisateurs = Files.readAllLines(pathRealisateurs);
 			lignesRealisateurs.remove(0);
 
-			for (String ligne : lignesRealisateurs) {
-				Lieu l = new Lieu();
-				String[] elements = ligne.split(";");
+			for (String ligne : lignesActeurs) {
+				Lieu l = splitPays(ligne);
+				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
+						|| (l.getEtat() != null && !l.getEtat().isEmpty())
+						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
 
-				String[] elementsLieu = elements[3].split(",");
-
-				switch (elementsLieu.length) {
-
-				case 1:
-					l.setPays(elementsLieu[0].trim());
-					break;
-
-				case 2:
-					l.setVille(elementsLieu[0].trim());
-					l.setPays(elementsLieu[1].trim());
-					break;
-
-				case 3:
-					l.setVille(elementsLieu[0].trim());
-					l.setEtat(elementsLieu[1].trim());
-					l.setPays(elementsLieu[2].trim());
-					break;
-				case 4:
-					l.setQuartier(elementsLieu[0].trim());
-					l.setVille(elementsLieu[1].trim());
-					l.setEtat(elementsLieu[2].trim());
-					l.setPays(elementsLieu[3].trim());
-					break;
-				default:
-					break;
-				}
-				
+				if (isValidLieu
+						&& !lieuDAO.ifLieuExists(l)) {
+					lieuDAO.insert(l);
 					listeLieux.add(l);
-				
+				}
+
 			}
 
 			// Films
@@ -111,38 +72,18 @@ public class LieuLectureCSV {
 			lignesFilms.remove(0);
 
 			for (String ligne : lignesFilms) {
-				Lieu l = new Lieu();
-				String[] elements = ligne.split(";");
+				Lieu l = splitPaysFilms(ligne);
 
-				String[] elementsLieu = elements[5].split(",");
+				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
+						|| (l.getEtat() != null && !l.getEtat().isEmpty())
+						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
 
-				switch (elementsLieu.length) {
-
-				case 1:
-					l.setPays(elementsLieu[0].trim());
-					break;
-
-				case 2:
-					l.setVille(elementsLieu[1].trim());
-					l.setPays(elementsLieu[0].trim());
-					break;
-
-				case 3:
-					l.setVille(elementsLieu[2].trim());
-					l.setEtat(elementsLieu[1].trim());
-					l.setPays(elementsLieu[0].trim());
-					break;
-				case 4:
-					l.setQuartier(elementsLieu[3].trim());
-					l.setVille(elementsLieu[2].trim());
-					l.setEtat(elementsLieu[1].trim());
-					l.setPays(elementsLieu[0].trim());
-					break;
-				default:
-					break;
+				if (isValidLieu
+						&& !lieuDAO.ifLieuExists(l)) {
+					lieuDAO.insert(l);
+					listeLieux.add(l);
 				}
 
-				listeLieux.add(l);
 			}
 
 		} catch (IOException e) {
@@ -151,6 +92,74 @@ public class LieuLectureCSV {
 		}
 		return listeLieux;
 
+	}
+
+	private static Lieu splitPaysFilms(String ligne) {
+		String[] elements = ligne.split(";");
+		Lieu l = new Lieu();
+
+		String[] elementsLieu = elements[5].split(",");
+
+		switch (elementsLieu.length) {
+
+		case 1:
+			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			break;
+
+		case 2:
+			l.setVille(elementsLieu[1].trim());
+			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			break;
+
+		case 3:
+			l.setVille(elementsLieu[2].trim());
+			l.setEtat(elementsLieu[1].trim());
+			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			break;
+		case 4:
+			l.setQuartier(elementsLieu[3].trim());
+			l.setVille(elementsLieu[2].trim());
+			l.setEtat(elementsLieu[1].trim());
+			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			break;
+		default:
+			break;
+		}
+		return l;
+	}
+
+	private static Lieu splitPays(String ligne) {
+		String[] elements = ligne.split(";");
+		Lieu l = new Lieu();
+
+		String[] elementsLieu = elements[3].split(",");
+
+		switch (elementsLieu.length) {
+
+		case 1:
+			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			break;
+
+		case 2:
+			l.setVille(elementsLieu[0].trim());
+			l.setPays(new Pays(elementsLieu[1].trim(), null));
+			break;
+
+		case 3:
+			l.setVille(elementsLieu[0].trim());
+			l.setEtat(elementsLieu[1].trim());
+			l.setPays(new Pays(elementsLieu[2].trim(), null));
+			break;
+		case 4:
+			l.setQuartier(elementsLieu[0].trim());
+			l.setVille(elementsLieu[1].trim());
+			l.setEtat(elementsLieu[2].trim());
+			l.setPays(new Pays(elementsLieu[3].trim(), null));
+			break;
+		default:
+			break;
+		}
+		return l;
 	}
 
 }

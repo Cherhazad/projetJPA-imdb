@@ -3,9 +3,14 @@ package Application.Entites;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -15,10 +20,11 @@ public class Lieu {
 
 	/** id **/
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private String id;
+	private int id;
 
-	/** rue **/
+	/** quartier **/
 	@Column(name = "QUARTIER")
 	private String quartier;
 
@@ -29,10 +35,6 @@ public class Lieu {
 	/** etat **/
 	@Column(name = "ETAT")
 	private String etat;
-
-	/** pays **/
-	@Column(name = "PAYS")
-	private String pays;
 
 	/** realisateurs **/
 	@OneToMany(mappedBy = "lieuNaissance")
@@ -46,6 +48,11 @@ public class Lieu {
 	@OneToMany(mappedBy = "lieuTournage")
 	private Set<Film> films = new HashSet<>();
 
+	/** pays **/
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ID_PAYS")
+	private Pays pays;
+
 	/**
 	 * Constructeur
 	 * 
@@ -56,12 +63,12 @@ public class Lieu {
 	/**
 	 * Constructeur
 	 * 
-	 * @param rue
+	 * @param quartier
 	 * @param ville
 	 * @param etat
 	 * @param pays
 	 */
-	public Lieu(String quartier, String ville, String etat, String pays) {
+	public Lieu(String quartier, String ville, String etat, Pays pays) {
 		this.quartier = quartier;
 		this.ville = ville;
 		this.etat = etat;
@@ -73,7 +80,7 @@ public class Lieu {
 	 * 
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -82,23 +89,23 @@ public class Lieu {
 	 * 
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * Getter pour rue
+	 * Getter pour quartier
 	 * 
-	 * @return the rue
+	 * @return the quartier
 	 */
 	public String getQuartier() {
 		return quartier;
 	}
 
 	/**
-	 * Setter pour rue
+	 * Setter pour quartier
 	 * 
-	 * @param rue the rue to set
+	 * @param quartier the quartier to set
 	 */
 	public void setQuartier(String quartier) {
 		this.quartier = quartier;
@@ -138,24 +145,6 @@ public class Lieu {
 	 */
 	public void setEtat(String etat) {
 		this.etat = etat;
-	}
-
-	/**
-	 * Getter pour pays
-	 * 
-	 * @return the pays
-	 */
-	public String getPays() {
-		return pays;
-	}
-
-	/**
-	 * Setter pour pays
-	 * 
-	 * @param pays the pays to set
-	 */
-	public void setPays(String pays) {
-		this.pays = pays;
 	}
 
 	/**
@@ -212,9 +201,28 @@ public class Lieu {
 		this.films = films;
 	}
 
+	/**
+	 * Getter pour pays
+	 * 
+	 * @return the pays
+	 */
+	public Pays getPays() {
+		return pays;
+	}
+
+	/**
+	 * Setter pour pays
+	 * 
+	 * @param pays the pays to set
+	 */
+	public void setPays(Pays pays) {
+		this.pays = pays;
+	}
+
 	@Override
 	public String toString() {
-		return "Lieu [id=" + id + ", quartier=" + quartier + ", ville=" + ville + ", etat=" + etat + ", pays=" + pays + "]";
+		return "Lieu [id=" + id + ", quartier=" + quartier + ", ville=" + ville + ", etat=" + etat + ", pays=" + pays
+				+ "]";
 	}
 
 }

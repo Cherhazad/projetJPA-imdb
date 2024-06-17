@@ -39,19 +39,20 @@ public class PaysDAO implements GenericDAO<Pays> {
 	public Pays findByName(String pays) {
 		return listePays.stream().filter(l -> l.getNom().equalsIgnoreCase(pays)).findFirst().orElse(null);
 	}
+	
 
 	/**
 	 * @param langue
 	 * @return
 	 */
-	public boolean ifLangueExists(String pays) {
+	public boolean ifPaysExists(String pays) {
 		return listePays.stream().anyMatch(l -> l.getNom().equalsIgnoreCase(pays));
 	}
 
 	@Override
 	public void insert(Pays pays) {
 
-		if (!ifLangueExists(pays.getNom())) {
+		if (!ifPaysExists(pays.getNom())) {
 			try {
 				transaction.begin();
 				em.persist(pays);
@@ -67,4 +68,6 @@ public class PaysDAO implements GenericDAO<Pays> {
 
 		}
 	}
+
+
 }

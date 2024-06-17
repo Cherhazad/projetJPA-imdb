@@ -1,5 +1,7 @@
 package Application.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import Application.DAO.LangueDAO;
@@ -11,6 +13,11 @@ import Application.Entites.Pays;
 import Application.Lecteurs.LangueLectureCSV;
 import Application.Lecteurs.LieuLectureCSV;
 import Application.Lecteurs.PaysLectureCSV;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
 public class TraitementDonnees {
 
@@ -23,29 +30,35 @@ public class TraitementDonnees {
 		// TODO mettre les conditions d'existence en base de données
 
 		// Insertion données pays en bd
-
-		Set<Pays> listePays = PaysLectureCSV.lireFichier();
-
-		for (Pays p : listePays) {
-			paysDAO.insert(p);
-		}
-
-		// Insertion lieux en bd
-//		Set<Lieu> listeLieux = LieuLectureCSV.lireFichier();
-//		
-//		lieuDAO.insert(null);
-//		for (Lieu l : listeLieux) {
-//			lieuDAO.insert(l);
+//
+//		Set<Pays> listePays = PaysLectureCSV.lireFichier();
+//
+//		for (Pays p : listePays) {
+//			paysDAO.insert(p);
 //		}
 
-		// Insertion langues en base de données
-//
+		// Insertion lieux en bd
+		Set<Lieu> listeLieux = LieuLectureCSV.lireFichier();
+
+		for (Lieu l : listeLieux) {
+
+			if (!paysDAO.ifPaysExists(l.getPays().getNom())) {
+				paysDAO.insert(l.getPays());
+			}
+
+			if (!lieuDAO.ifLieuExists(l)) {
+				lieuDAO.insert(l);
+			}
+		}
+	}
+	// Insertion langues en base de données
+
 //		Set<Langue> listeLangues = LangueLectureCSV.lireFichier();
 //
 //		for (Langue langue : listeLangues) {
 //			langueDAO.insert(langue);
 //		}
-	}
+//	}
 
 	// Insertion
 
