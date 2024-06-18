@@ -1,7 +1,6 @@
 package Application.DAO;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import Application.Entites.Lieu;
@@ -15,27 +14,18 @@ import jakarta.persistence.TypedQuery;
  */
 public class LieuDAO implements GenericDAO<Lieu> {
 
-	EntityManager em = emf.createEntityManager();
-	EntityTransaction transaction = em.getTransaction();
-
-	Set<Lieu> SetLieux = new HashSet<>();
+	Set<Lieu> setLieux = new HashSet<>();
 	public static final PaysDAO paysDAO = DaoLien.paysDao();
+	private EntityManager em = DaoLien.em;
+	private EntityTransaction transaction = DaoLien.transaction;
 
 	/**
 	 * Constructeur
 	 * 
 	 * @param listeLieux
 	 */
-	public LieuDAO() {
-		this.SetLieux = findAll();
-	}
-
-	/**
-	 * Constructeur
-	 * 
-	 * @param em
-	 */
 	public LieuDAO(EntityManager em) {
+		this.setLieux = findAll();
 		this.em = em;
 	}
 
@@ -47,28 +37,43 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	 */
 	public Set<Lieu> findAll() {
 		TypedQuery<Lieu> query = em.createQuery("select l from Lieu l JOIN FETCH l.pays", Lieu.class);
-		SetLieux = new HashSet<>(query.getResultList());
+		setLieux = new HashSet<>(query.getResultList());
 
-		return SetLieux;
+		return setLieux;
 	}
 
+	/**
+	 * @param nom
+	 * @return
+	 */
+	public Lieu findLieu(String quartier, String ville, String etat) {
+		return setLieux.stream().filter(l -> l.getQuartier().equalsIgnoreCase(quartier)
+				&& l.getVille().equalsIgnoreCase(ville) && l.getEtat().equalsIgnoreCase(etat)).findFirst().orElse(null);
+	}
+
+	/**
+	 * @param lieu
+	 * @return
+	 */
 	public boolean ifLieuExists(Lieu lieu) {
-		return SetLieux.stream()
-				.anyMatch(l -> l.getVille() != null && l.getVille().equals(lieu.getVille()) && l.getEtat() != null
-						&& l.getEtat().equals(lieu.getEtat()) && l.getQuartier() != null
-						&& l.getQuartier().equals(lieu.getQuartier()) && l.getPays() != null
-						&& l.getPays().equals(lieu.getPays()));
+		return setLieux.stream()
+				.anyMatch(l -> l.getVille() != null && l.getVille().equalsIgnoreCase(lieu.getVille())
+						&& l.getEtat() != null && l.getEtat().equalsIgnoreCase(lieu.getEtat())
+						&& l.getQuartier() != null && l.getQuartier().equalsIgnoreCase(lieu.getQuartier())
+						&& l.getPays() != null && l.getPays().equals(lieu.getPays()));
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void insert(Lieu lieu) {
 
 		if (!ifLieuExists(lieu)) {
 			try {
-				transaction.begin();
+
 				em.persist(lieu);
-				SetLieux.add(lieu);
-				transaction.commit();
+				setLieux.add(lieu);
 
 			} catch (RuntimeException e) {
 				if (transaction.isActive()) {

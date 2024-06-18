@@ -1,35 +1,37 @@
 package Application.DAO;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import Application.Entites.Pays;
+import Application.Utils.DaoLien;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 
 public class PaysDAO implements GenericDAO<Pays> {
 
-	EntityManager em = emf.createEntityManager();
-	EntityTransaction transaction = em.getTransaction();
+	Set<Pays> setPays = new HashSet<>();
+	private EntityManager em = DaoLien.em;
+	private EntityTransaction transaction = DaoLien.transaction;
 
-	List<Pays> listePays = new ArrayList<>();
-
+	
 	/**
 	 * Constructeur
 	 */
-	public PaysDAO() {
-		this.listePays = findAll();
+	public PaysDAO(EntityManager em) {
+		this.setPays = findAll();
+		this.em = em;
 	}
 
 	/**
 	 * @return
 	 */
-	public List<Pays> findAll() {
+	public Set<Pays> findAll() {
 		TypedQuery<Pays> query = em.createQuery("SELECT p FROM Pays p", Pays.class);
-		listePays = query.getResultList();
+		setPays = new HashSet<>(query.getResultList());
 
-		return listePays;
+		return setPays;
 	}
 
 	/**
@@ -37,7 +39,7 @@ public class PaysDAO implements GenericDAO<Pays> {
 	 * @return
 	 */
 	public Pays findByName(String pays) {
-		return listePays.stream().filter(l -> l.getNom().equalsIgnoreCase(pays)).findFirst().orElse(null);
+		return setPays.stream().filter(l -> l.getNom().equalsIgnoreCase(pays)).findFirst().orElse(null);
 	}
 	
 
@@ -46,7 +48,7 @@ public class PaysDAO implements GenericDAO<Pays> {
 	 * @return
 	 */
 	public boolean ifPaysExists(Pays pays) {
-		return listePays.stream().anyMatch(l -> l.getNom().equalsIgnoreCase(pays.getNom()));
+		return setPays.stream().anyMatch(l -> l.getNom().equalsIgnoreCase(pays.getNom()));
 	}
 
 	@Override
@@ -56,6 +58,7 @@ public class PaysDAO implements GenericDAO<Pays> {
 			try {
 				transaction.begin();
 				em.persist(pays);
+				setPays.add(pays);
 				transaction.commit();
 
 			} catch (RuntimeException e) {

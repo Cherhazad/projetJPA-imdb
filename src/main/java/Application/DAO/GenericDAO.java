@@ -1,7 +1,5 @@
 package Application.DAO;
 
-import java.util.List;
-
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 

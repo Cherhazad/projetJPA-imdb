@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Application.Entites.Langue;
+import Application.Utils.DaoLien;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
@@ -13,16 +14,16 @@ import jakarta.persistence.TypedQuery;
  */
 public class LangueDAO implements GenericDAO<Langue> {
 
-	EntityManager em = emf.createEntityManager();
-	EntityTransaction transaction = em.getTransaction();
-
 	List<Langue> listeLangues = new ArrayList<>();
+	private EntityManager em = DaoLien.em;
+	private EntityTransaction transaction = DaoLien.transaction;
 
 	/**
 	 * Constructeur
 	 */
-	public LangueDAO() {
+	public LangueDAO(EntityManager em) {
 		this.listeLangues = findAll();
+		this.em = em;
 	}
 
 	/**

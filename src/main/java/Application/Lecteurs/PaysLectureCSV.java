@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import Application.DAO.LangueDAO;
 import Application.DAO.LieuDAO;
@@ -30,7 +31,10 @@ public class PaysLectureCSV {
 			List<String> lignes = Files.readAllLines(path);
 			lignes.remove(0);
 
-			for (String ligne : lignes) {
+			// pour faire des tests en base sans tout charger
+			List<String> limitedLignes = lignes.stream().limit(30).collect(Collectors.toList());
+
+			for (String ligne : limitedLignes) {
 				String[] elements = ligne.split(";");
 				String nomPays = elements[0].trim();
 

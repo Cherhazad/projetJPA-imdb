@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
@@ -28,14 +29,15 @@ public class LieuLectureCSV {
 		Path pathFilms = Paths.get("src/main/resources/films.csv");
 
 		try {
+			// Acteurs
+			
 			List<String> lignesActeurs = Files.readAllLines(pathActeurs);
 			lignesActeurs.remove(0);
+			
+			List<String> limitedLignes = lignesActeurs.stream().limit(30).collect(Collectors.toList());
+			for (String ligne : limitedLignes) {
 
-			// Acteurs
-
-			for (String ligne : lignesActeurs) {
-
-				Lieu l = splitPays(ligne);
+				Lieu l = splitLieux(ligne);
 				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
 						|| (l.getEtat() != null && !l.getEtat().isEmpty())
 						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
@@ -50,9 +52,11 @@ public class LieuLectureCSV {
 
 			List<String> lignesRealisateurs = Files.readAllLines(pathRealisateurs);
 			lignesRealisateurs.remove(0);
-
-			for (String ligne : lignesActeurs) {
-				Lieu l = splitPays(ligne);
+			
+			List<String> limitedLignes2 = lignesRealisateurs.stream().limit(30).collect(Collectors.toList());
+			
+			for (String ligne : limitedLignes2) {
+				Lieu l = splitLieux(ligne);
 				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
 						|| (l.getEtat() != null && !l.getEtat().isEmpty())
 						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
@@ -68,9 +72,10 @@ public class LieuLectureCSV {
 
 			List<String> lignesFilms = Files.readAllLines(pathFilms);
 			lignesFilms.remove(0);
-
-			for (String ligne : lignesFilms) {
-				Lieu l = splitPaysFilms(ligne);
+			
+			List<String> limitedLignes3 = lignesFilms.stream().limit(30).collect(Collectors.toList());
+			for (String ligne : limitedLignes3) {
+				Lieu l = splitLieuxFilms(ligne);
 
 				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
 						|| (l.getEtat() != null && !l.getEtat().isEmpty())
@@ -110,7 +115,16 @@ public class LieuLectureCSV {
 		return null;
 	}
 
-	private static Lieu splitPaysFilms(String ligne) {
+	/**
+	 * Méthode dynamique qui permet, en fonction du nombre d'éléments qui composent
+	 * le lieu, d'attribuer le bon élément (quartier, ville, état ou pays) à la
+	 * bonne colonne dans la table en base de données à partir des lieux du fichier
+	 * films.csv
+	 * 
+	 * @param ligne
+	 * @return
+	 */
+	public static Lieu splitLieuxFilms(String ligne) {
 		String[] elements = ligne.split(";");
 		Lieu l = new Lieu();
 
@@ -144,7 +158,16 @@ public class LieuLectureCSV {
 		return l;
 	}
 
-	private static Lieu splitPays(String ligne) {
+	/**
+	 * Méthode dynamique qui permet, en fonction du nombre d'éléments qui composent
+	 * le lieu, d'attribuer le bon élément (quartier, ville, état ou pays) à la
+	 * bonne colonne dans la table en base de données à partir des lieux des
+	 * fichiers realisateurs.csv et acteurs.csv
+	 * 
+	 * @param ligne
+	 * @return
+	 */
+	public static Lieu splitLieux(String ligne) {
 		String[] elements = ligne.split(";");
 		Lieu l = new Lieu();
 
