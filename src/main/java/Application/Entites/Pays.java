@@ -46,7 +46,6 @@ public class Pays {
 	/**
 	 * Constructeur
 	 * 
-	 * @param id
 	 * @param nom
 	 * @param url
 	 */

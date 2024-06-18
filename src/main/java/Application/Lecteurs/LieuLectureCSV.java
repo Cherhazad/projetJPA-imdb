@@ -21,7 +21,7 @@ public class LieuLectureCSV {
 
 	public static Set<Lieu> lireFichier() {
 
-		Set<Lieu> listeLieux = new HashSet<>();
+		Set<Lieu> setLieux = new HashSet<>();
 
 		Path pathActeurs = Paths.get("src/main/resources/acteurs.csv");
 		Path pathRealisateurs = Paths.get("src/main/resources/realisateurs.csv");
@@ -40,10 +40,9 @@ public class LieuLectureCSV {
 						|| (l.getEtat() != null && !l.getEtat().isEmpty())
 						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
 
-				if (isValidLieu
-						&& !lieuDAO.ifLieuExists(l)) {
+				if (isValidLieu && !lieuDAO.ifLieuExists(l)) {
 					lieuDAO.insert(l);
-					listeLieux.add(l);
+					setLieux.add(l);
 				}
 			}
 
@@ -58,10 +57,9 @@ public class LieuLectureCSV {
 						|| (l.getEtat() != null && !l.getEtat().isEmpty())
 						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
 
-				if (isValidLieu
-						&& !lieuDAO.ifLieuExists(l)) {
+				if (isValidLieu && !lieuDAO.ifLieuExists(l)) {
 					lieuDAO.insert(l);
-					listeLieux.add(l);
+					setLieux.add(l);
 				}
 
 			}
@@ -78,10 +76,9 @@ public class LieuLectureCSV {
 						|| (l.getEtat() != null && !l.getEtat().isEmpty())
 						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
 
-				if (isValidLieu
-						&& !lieuDAO.ifLieuExists(l)) {
+				if (isValidLieu && !lieuDAO.ifLieuExists(l)) {
 					lieuDAO.insert(l);
-					listeLieux.add(l);
+					setLieux.add(l);
 				}
 
 			}
@@ -90,8 +87,27 @@ public class LieuLectureCSV {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return listeLieux;
+		return setLieux;
 
+	}
+
+	public static Pays verifPays(String nomPays) {
+		if (!nomPays.isEmpty()) {
+			if (nomPays.equals("USA")) {
+				nomPays = "United States";
+			}
+			if (nomPays.equals("UK")) {
+				nomPays = "United Kingdom";
+			}
+			Pays pays = paysDAO.findByName(nomPays);
+			if (pays == null) {
+				pays = new Pays();
+				pays.setNom(nomPays);
+				paysDAO.insert(pays);
+			}
+			return pays;
+		}
+		return null;
 	}
 
 	private static Lieu splitPaysFilms(String ligne) {
@@ -103,24 +119,24 @@ public class LieuLectureCSV {
 		switch (elementsLieu.length) {
 
 		case 1:
-			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			l.setPays(verifPays(elementsLieu[0].trim()));
 			break;
 
 		case 2:
 			l.setVille(elementsLieu[1].trim());
-			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			l.setPays(verifPays(elementsLieu[0].trim()));
 			break;
 
 		case 3:
 			l.setVille(elementsLieu[2].trim());
 			l.setEtat(elementsLieu[1].trim());
-			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			l.setPays(verifPays(elementsLieu[0].trim()));
 			break;
 		case 4:
 			l.setQuartier(elementsLieu[3].trim());
 			l.setVille(elementsLieu[2].trim());
 			l.setEtat(elementsLieu[1].trim());
-			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			l.setPays(verifPays(elementsLieu[0].trim()));
 			break;
 		default:
 			break;
@@ -137,24 +153,24 @@ public class LieuLectureCSV {
 		switch (elementsLieu.length) {
 
 		case 1:
-			l.setPays(new Pays(elementsLieu[0].trim(), null));
+			l.setPays(verifPays(elementsLieu[0].trim()));
 			break;
 
 		case 2:
 			l.setVille(elementsLieu[0].trim());
-			l.setPays(new Pays(elementsLieu[1].trim(), null));
+			l.setPays(verifPays(elementsLieu[1].trim()));
 			break;
 
 		case 3:
 			l.setVille(elementsLieu[0].trim());
 			l.setEtat(elementsLieu[1].trim());
-			l.setPays(new Pays(elementsLieu[2].trim(), null));
+			l.setPays(verifPays(elementsLieu[2].trim()));
 			break;
 		case 4:
 			l.setQuartier(elementsLieu[0].trim());
 			l.setVille(elementsLieu[1].trim());
 			l.setEtat(elementsLieu[2].trim());
-			l.setPays(new Pays(elementsLieu[3].trim(), null));
+			l.setPays(verifPays(elementsLieu[3].trim()));
 			break;
 		default:
 			break;

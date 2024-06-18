@@ -22,7 +22,7 @@ public class PaysLectureCSV {
 
 	public static Set<Pays> lireFichier() {
 
-		Set<Pays> listePays = new HashSet<>();
+		Set<Pays> setPays = new HashSet<>();
 
 		Path path = Paths.get("src/main/resources/pays.csv");
 
@@ -31,21 +31,21 @@ public class PaysLectureCSV {
 			lignes.remove(0);
 
 			for (String ligne : lignes) {
-				Pays p = new Pays();
 				String[] elements = ligne.split(";");
 				String nomPays = elements[0].trim();
 
 				if (!nomPays.isEmpty() && !langueDAO.ifLangueExists(nomPays)) {
+					Pays p = new Pays();
 					p.setNom(nomPays);
 					p.setUrl(elements[1].trim());
-					listePays.add(p);
+					setPays.add(p);
 				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return listePays;
+		return setPays;
 
 	}
 

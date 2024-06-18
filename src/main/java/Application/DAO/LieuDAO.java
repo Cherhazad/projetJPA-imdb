@@ -1,10 +1,10 @@
 package Application.DAO;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import Application.Entites.Lieu;
-import Application.Entites.Pays;
 import Application.Utils.DaoLien;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -18,7 +18,7 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	EntityManager em = emf.createEntityManager();
 	EntityTransaction transaction = em.getTransaction();
 
-	List<Lieu> listeLieux = new ArrayList<>();
+	Set<Lieu> SetLieux = new HashSet<>();
 	public static final PaysDAO paysDAO = DaoLien.paysDao();
 
 	/**
@@ -27,7 +27,7 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	 * @param listeLieux
 	 */
 	public LieuDAO() {
-		this.listeLieux = findAll();
+		this.SetLieux = findAll();
 	}
 
 	/**
@@ -45,15 +45,15 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	 * 
 	 * @return
 	 */
-	public List<Lieu> findAll() {
+	public Set<Lieu> findAll() {
 		TypedQuery<Lieu> query = em.createQuery("select l from Lieu l JOIN FETCH l.pays", Lieu.class);
-		listeLieux = query.getResultList();
+		SetLieux = new HashSet<>(query.getResultList());
 
-		return listeLieux;
+		return SetLieux;
 	}
 
 	public boolean ifLieuExists(Lieu lieu) {
-		return listeLieux.stream()
+		return SetLieux.stream()
 				.anyMatch(l -> l.getVille() != null && l.getVille().equals(lieu.getVille()) && l.getEtat() != null
 						&& l.getEtat().equals(lieu.getEtat()) && l.getQuartier() != null
 						&& l.getQuartier().equals(lieu.getQuartier()) && l.getPays() != null
@@ -63,16 +63,11 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	@Override
 	public void insert(Lieu lieu) {
 
-		Pays pays = lieu.getPays();
-		if (!paysDAO.ifPaysExists(lieu.getPays().getNom())) {
-			lieu.setPays(pays);
-		}
-
 		if (!ifLieuExists(lieu)) {
 			try {
 				transaction.begin();
 				em.persist(lieu);
-				listeLieux.add(lieu);
+				SetLieux.add(lieu);
 				transaction.commit();
 
 			} catch (RuntimeException e) {

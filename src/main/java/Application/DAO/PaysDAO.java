@@ -45,14 +45,14 @@ public class PaysDAO implements GenericDAO<Pays> {
 	 * @param langue
 	 * @return
 	 */
-	public boolean ifPaysExists(String pays) {
-		return listePays.stream().anyMatch(l -> l.getNom().equalsIgnoreCase(pays));
+	public boolean ifPaysExists(Pays pays) {
+		return listePays.stream().anyMatch(l -> l.getNom().equalsIgnoreCase(pays.getNom()));
 	}
 
 	@Override
 	public void insert(Pays pays) {
 
-		if (!ifPaysExists(pays.getNom())) {
+		if (!ifPaysExists(pays)) {
 			try {
 				transaction.begin();
 				em.persist(pays);
