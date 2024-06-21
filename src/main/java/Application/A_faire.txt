@@ -2,11 +2,8 @@
 	- remplacer les vachar avec les String (car représente java contrairement au diagramme ER qui représente la base de données)
 	- ajouter les méthodes
 	
- 
-- isoler les lignes de connexions à la base: begin/commit
-	- classes/interfaces TODO dans pck Utils
+	- corriger le diagramme pour retirer les attributs non primitifs
 
 - la javadoc des override toString et des classes 
 - javadoc des daos
 	
-- mettre des conditions de vérification d'existence en base 

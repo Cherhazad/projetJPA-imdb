@@ -15,11 +15,17 @@ import Application.Entites.Lieu;
 import Application.Entites.Pays;
 import Application.Utils.DaoLien;
 
-public class LieuLectureCSV {
+/**
+ * 
+ */
+public abstract class LieuLectureCSV {
 
 	public static final PaysDAO paysDAO = DaoLien.paysDao();
 	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
 
+	/**
+	 * @return
+	 */
 	public static Set<Lieu> lireFichier() {
 
 		Set<Lieu> setLieux = new HashSet<>();
@@ -30,20 +36,15 @@ public class LieuLectureCSV {
 
 		try {
 			// Acteurs
-			
+
 			List<String> lignesActeurs = Files.readAllLines(pathActeurs);
 			lignesActeurs.remove(0);
-			
+
 			List<String> limitedLignes = lignesActeurs.stream().limit(30).collect(Collectors.toList());
 			for (String ligne : limitedLignes) {
-
-				Lieu l = splitLieux(ligne);
-				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
-						|| (l.getEtat() != null && !l.getEtat().isEmpty())
-						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
-
-				if (isValidLieu && !lieuDAO.ifLieuExists(l)) {
-					lieuDAO.insert(l);
+				String[] elements = ligne.split(";");
+				Lieu l = splitLieux(elements[3]);
+				if (!lieuDAO.ifLieuExists(l) && isValidLieu(l)) {
 					setLieux.add(l);
 				}
 			}
@@ -52,17 +53,13 @@ public class LieuLectureCSV {
 
 			List<String> lignesRealisateurs = Files.readAllLines(pathRealisateurs);
 			lignesRealisateurs.remove(0);
-			
-			List<String> limitedLignes2 = lignesRealisateurs.stream().limit(30).collect(Collectors.toList());
-			
-			for (String ligne : limitedLignes2) {
-				Lieu l = splitLieux(ligne);
-				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
-						|| (l.getEtat() != null && !l.getEtat().isEmpty())
-						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
 
-				if (isValidLieu && !lieuDAO.ifLieuExists(l)) {
-					lieuDAO.insert(l);
+			List<String> limitedLignes2 = lignesRealisateurs.stream().limit(30).collect(Collectors.toList());
+
+			for (String ligne : limitedLignes2) {
+				String[] elements = ligne.split(";");
+				Lieu l = splitLieux(elements[3]);
+				if (!lieuDAO.ifLieuExists(l) && isValidLieu(l)) {
 					setLieux.add(l);
 				}
 
@@ -72,17 +69,14 @@ public class LieuLectureCSV {
 
 			List<String> lignesFilms = Files.readAllLines(pathFilms);
 			lignesFilms.remove(0);
-			
+
 			List<String> limitedLignes3 = lignesFilms.stream().limit(30).collect(Collectors.toList());
 			for (String ligne : limitedLignes3) {
-				Lieu l = splitLieuxFilms(ligne);
+				String[] elements = ligne.split(";");
 
-				boolean isValidLieu = (l.getPays() != null) || (l.getVille() != null && !l.getVille().isEmpty())
-						|| (l.getEtat() != null && !l.getEtat().isEmpty())
-						|| (l.getQuartier() != null && !l.getQuartier().isEmpty());
+				Lieu l = splitLieuxFilms(elements[5]);
 
-				if (isValidLieu && !lieuDAO.ifLieuExists(l)) {
-					lieuDAO.insert(l);
+				if (!lieuDAO.ifLieuExists(l) && isValidLieu(l)) {
 					setLieux.add(l);
 				}
 
@@ -115,6 +109,12 @@ public class LieuLectureCSV {
 		return null;
 	}
 
+	public static boolean isValidLieu(Lieu lieu) {
+		return (lieu.getPays() != null || (lieu.getVille() != null && !lieu.getVille().isEmpty())
+				|| (lieu.getEtat() != null && !lieu.getEtat().isEmpty())
+				|| (lieu.getQuartier() != null && !lieu.getQuartier().isEmpty()));
+	}
+
 	/**
 	 * Méthode dynamique qui permet, en fonction du nombre d'éléments qui composent
 	 * le lieu, d'attribuer le bon élément (quartier, ville, état ou pays) à la
@@ -125,13 +125,11 @@ public class LieuLectureCSV {
 	 * @return
 	 */
 	public static Lieu splitLieuxFilms(String ligne) {
-		String[] elements = ligne.split(";");
-		Lieu l = new Lieu();
 
-		String[] elementsLieu = elements[5].split(",");
+		Lieu l = new Lieu();
+		String[] elementsLieu = ligne.split(",");
 
 		switch (elementsLieu.length) {
-
 		case 1:
 			l.setPays(verifPays(elementsLieu[0].trim()));
 			break;
@@ -168,10 +166,9 @@ public class LieuLectureCSV {
 	 * @return
 	 */
 	public static Lieu splitLieux(String ligne) {
-		String[] elements = ligne.split(";");
 		Lieu l = new Lieu();
 
-		String[] elementsLieu = elements[3].split(",");
+		String[] elementsLieu = ligne.split(",");
 
 		switch (elementsLieu.length) {
 

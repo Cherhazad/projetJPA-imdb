@@ -5,23 +5,25 @@ import java.util.Set;
 
 import Application.Entites.Pays;
 import Application.Utils.DaoLien;
+import Application.Utils.JPAConnexion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 
+/**
+ * 
+ */
 public class PaysDAO implements GenericDAO<Pays> {
-
+	
 	Set<Pays> setPays = new HashSet<>();
 	private EntityManager em = DaoLien.em;
 	private EntityTransaction transaction = DaoLien.transaction;
 
-	
 	/**
 	 * Constructeur
 	 */
-	public PaysDAO(EntityManager em) {
+	public PaysDAO(EntityManager em) { 
 		this.setPays = findAll();
-		this.em = em;
 	}
 
 	/**
@@ -41,7 +43,6 @@ public class PaysDAO implements GenericDAO<Pays> {
 	public Pays findByName(String pays) {
 		return setPays.stream().filter(l -> l.getNom().equalsIgnoreCase(pays)).findFirst().orElse(null);
 	}
-	
 
 	/**
 	 * @param langue
@@ -56,21 +57,16 @@ public class PaysDAO implements GenericDAO<Pays> {
 
 		if (!ifPaysExists(pays)) {
 			try {
-				transaction.begin();
 				em.persist(pays);
 				setPays.add(pays);
-				transaction.commit();
-
 			} catch (RuntimeException e) {
 				if (transaction.isActive()) {
 					transaction.rollback();
 				}
 				throw e;
 			}
-		//	em.close();
 
 		}
 	}
-
 
 }

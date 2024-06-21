@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -49,7 +50,7 @@ public class Acteur {
 	private Set<Role> roles = new HashSet<>();
 
 	/** lieuNaissance **/
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "ID_LIEU_NAISSANCE")
 	private Lieu lieuNaissance;
 

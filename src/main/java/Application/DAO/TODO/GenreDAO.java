@@ -1,4 +1,6 @@
-package Application.DAO;
+package Application.DAO.TODO;
+
+import Application.DAO.GenericDAO;
 
 public class GenreDAO implements GenericDAO {
 

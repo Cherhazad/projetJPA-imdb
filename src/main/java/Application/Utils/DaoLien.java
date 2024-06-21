@@ -1,7 +1,6 @@
 package Application.Utils;
 
 import Application.DAO.ActeurDAO;
-import Application.DAO.GenericDAO;
 import Application.DAO.LangueDAO;
 import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
@@ -16,7 +15,9 @@ import jakarta.persistence.EntityTransaction;
  */
 public abstract class DaoLien {
 	
-	public static EntityManager em = GenericDAO.emf.createEntityManager();
+	static JPAConnexion connexionJPA = new JPAConnexion();
+	
+	public static EntityManager em = connexionJPA.getEntityManager();
 	public static EntityTransaction transaction = em.getTransaction();
 
 	public static PaysDAO paysDao() {

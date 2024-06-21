@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Application.Entites.Lieu;
+import Application.Lecteurs.LieuLectureCSV;
 import Application.Utils.DaoLien;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -26,7 +27,6 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	 */
 	public LieuDAO(EntityManager em) {
 		this.setLieux = findAll();
-		this.em = em;
 	}
 
 	/**
@@ -56,12 +56,15 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	 * @return
 	 */
 	public boolean ifLieuExists(Lieu lieu) {
-		return setLieux.stream()
-				.anyMatch(l -> l.getVille() != null && l.getVille().equalsIgnoreCase(lieu.getVille())
-						&& l.getEtat() != null && l.getEtat().equalsIgnoreCase(lieu.getEtat())
-						&& l.getQuartier() != null && l.getQuartier().equalsIgnoreCase(lieu.getQuartier())
-						&& l.getPays() != null && l.getPays().equals(lieu.getPays()));
+	    return setLieux.stream()
+	            .anyMatch(l -> 
+	                (l.getVille() == null ? lieu.getVille() == null : l.getVille().equalsIgnoreCase(lieu.getVille())) &&
+	                (l.getEtat() == null ? lieu.getEtat() == null : l.getEtat().equalsIgnoreCase(lieu.getEtat())) &&
+	                (l.getQuartier() == null ? lieu.getQuartier() == null : l.getQuartier().equalsIgnoreCase(lieu.getQuartier())) &&
+	                (l.getPays() == null ? lieu.getPays() == null : l.getPays().equals(lieu.getPays()))
+	            );
 	}
+
 
 	/**
 	 *
@@ -69,11 +72,11 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	@Override
 	public void insert(Lieu lieu) {
 
-		if (!ifLieuExists(lieu)) {
+		if (!ifLieuExists(lieu) && LieuLectureCSV.isValidLieu(lieu)) {
 			try {
-
 				em.persist(lieu);
 				setLieux.add(lieu);
+				System.out.println(lieu);
 
 			} catch (RuntimeException e) {
 				if (transaction.isActive()) {
@@ -82,7 +85,6 @@ public class LieuDAO implements GenericDAO<Lieu> {
 				throw e;
 			}
 		}
-		// em.close();
 	}
 
 }

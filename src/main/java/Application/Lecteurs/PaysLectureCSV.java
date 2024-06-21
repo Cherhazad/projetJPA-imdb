@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import Application.DAO.LangueDAO;
 import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
+import Application.Entites.Lieu;
 import Application.Entites.Pays;
 import Application.Utils.DaoLien;
 
@@ -30,16 +31,14 @@ public class PaysLectureCSV {
 		try {
 			List<String> lignes = Files.readAllLines(path);
 			lignes.remove(0);
+		
 
-			// pour faire des tests en base sans tout charger
-			List<String> limitedLignes = lignes.stream().limit(30).collect(Collectors.toList());
-
-			for (String ligne : limitedLignes) {
+			for (String ligne : lignes) {
 				String[] elements = ligne.split(";");
 				String nomPays = elements[0].trim();
 
-				if (!nomPays.isEmpty() && !langueDAO.ifLangueExists(nomPays)) {
-					Pays p = new Pays();
+				Pays p = new Pays();
+				if (!nomPays.isEmpty() && !paysDAO.ifPaysExists(p)) {
 					p.setNom(nomPays);
 					p.setUrl(elements[1].trim());
 					setPays.add(p);
@@ -52,5 +51,5 @@ public class PaysLectureCSV {
 		return setPays;
 
 	}
-
+	
 }

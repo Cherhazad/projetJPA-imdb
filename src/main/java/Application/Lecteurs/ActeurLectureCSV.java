@@ -1,7 +1,5 @@
 package Application.Lecteurs;
 
-import static Application.Lecteurs.LieuLectureCSV.verifPays;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +19,6 @@ import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
 import Application.Entites.Acteur;
 import Application.Entites.Lieu;
-import Application.Entites.Pays;
 import Application.Utils.DaoLien;
 
 public class ActeurLectureCSV {
@@ -56,9 +53,10 @@ public class ActeurLectureCSV {
 				a.setDateNaissance(date);
 
 				// association lieu
-				splitLieuActeurs(elements);
-
-//				a.setLieuNaissance(lieuNaissance);
+				Lieu l = LieuLectureCSV.splitLieux(elements[3]);
+		
+				a.setLieuNaissance(l);
+				
 
 				String tailleString = elements[4].replace(" m", "").trim();
 				if (!tailleString.isEmpty()) {
@@ -77,42 +75,6 @@ public class ActeurLectureCSV {
 		}
 		return SetActeurs;
 
-	}
-
-	private static void splitLieuActeurs(String[] elements) {
-		String[] lieuComplet = elements[3].split(",");
-		Lieu l = null;
-		if (lieuComplet == null) {
-			System.out.println("ce lieu n'existe pas");
-		} else {
-			l = new Lieu();
-			
-			switch (lieuComplet.length) {
-
-			case 1:
-				l.setPays(verifPays(lieuComplet[0].trim()));
-				break;
-
-			case 2:
-				l.setVille(lieuComplet[0].trim());
-				l.setPays(verifPays(lieuComplet[1].trim()));
-				break;
-
-			case 3:
-				l.setVille(lieuComplet[0].trim());
-				l.setEtat(lieuComplet[1].trim());
-				l.setPays(verifPays(lieuComplet[2].trim()));
-				break;
-			case 4:
-				l.setQuartier(lieuComplet[0].trim());
-				l.setVille(lieuComplet[1].trim());
-				l.setEtat(lieuComplet[2].trim());
-				l.setPays(verifPays(lieuComplet[3].trim()));
-				break;
-			default:
-				break;
-			}
-		}
 	}
 
 	private static LocalDate parseDate(String dateString) {
@@ -140,4 +102,5 @@ public class ActeurLectureCSV {
 			return null;
 		}
 	}
+	
 }
