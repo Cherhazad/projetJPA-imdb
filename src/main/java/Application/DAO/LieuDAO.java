@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Application.Entites.Lieu;
+import Application.Entites.Pays;
 import Application.Lecteurs.LieuLectureCSV;
 import Application.Utils.DaoLien;
 import jakarta.persistence.EntityManager;
@@ -46,9 +47,9 @@ public class LieuDAO implements GenericDAO<Lieu> {
 	 * @param nom
 	 * @return
 	 */
-	public Lieu findLieu(String quartier, String ville, String etat) {
-		return setLieux.stream().filter(l -> l.getQuartier().equalsIgnoreCase(quartier)
-				&& l.getVille().equalsIgnoreCase(ville) && l.getEtat().equalsIgnoreCase(etat)).findFirst().orElse(null);
+	public Lieu findLieu(String quartier, String ville, String etat, Pays pays) {
+		return setLieux.stream().filter(l -> l.getQuartier() != null && l.getQuartier().equalsIgnoreCase(quartier)
+				&& l.getVille() != null && l.getVille().equalsIgnoreCase(ville) && l.getEtat() !=null && l.getEtat().equalsIgnoreCase(etat) && l.getPays() != null && l.getPays().equals(pays)).findFirst().orElse(null);
 	}
 
 	/**
@@ -76,7 +77,6 @@ public class LieuDAO implements GenericDAO<Lieu> {
 			try {
 				em.persist(lieu);
 				setLieux.add(lieu);
-				System.out.println(lieu);
 
 			} catch (RuntimeException e) {
 				if (transaction.isActive()) {

@@ -15,42 +15,25 @@ import Application.Entites.Lieu;
 import Application.Entites.Pays;
 import Application.Utils.DaoLien;
 
-/**
+/** 
  * 
  */
+
+//TODO méthode lireFichierRealisateurs et lireFichierFilms à spliter
 public abstract class LieuLectureCSV {
 
 	public static final PaysDAO paysDAO = DaoLien.paysDao();
 	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
+	static Path pathActeurs = Paths.get("src/main/resources/acteurs.csv");
+	static Path pathRealisateurs = Paths.get("src/main/resources/realisateurs.csv");
+	static Path pathFilms = Paths.get("src/main/resources/films.csv");
 
-	/**
-	 * @return
-	 */
-	public static Set<Lieu> lireFichier() {
+	static Set<Lieu> setLieux = new HashSet<>();
 
-		Set<Lieu> setLieux = new HashSet<>();
 
-		Path pathActeurs = Paths.get("src/main/resources/acteurs.csv");
-		Path pathRealisateurs = Paths.get("src/main/resources/realisateurs.csv");
-		Path pathFilms = Paths.get("src/main/resources/films.csv");
+	public static Set<Lieu> lireFichierRealisateurs() {
 
 		try {
-			// Acteurs
-
-			List<String> lignesActeurs = Files.readAllLines(pathActeurs);
-			lignesActeurs.remove(0);
-
-			List<String> limitedLignes = lignesActeurs.stream().limit(30).collect(Collectors.toList());
-			for (String ligne : limitedLignes) {
-				String[] elements = ligne.split(";");
-				Lieu l = splitLieux(elements[3]);
-				if (!lieuDAO.ifLieuExists(l) && isValidLieu(l)) {
-					setLieux.add(l);
-				}
-			}
-
-			// realisateurs
-
 			List<String> lignesRealisateurs = Files.readAllLines(pathRealisateurs);
 			lignesRealisateurs.remove(0);
 
@@ -64,7 +47,16 @@ public abstract class LieuLectureCSV {
 				}
 
 			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return setLieux;
 
+	}
+
+	public static Set<Lieu> lireFichierFilms() {
+		try {
 			// Films
 
 			List<String> lignesFilms = Files.readAllLines(pathFilms);
@@ -81,7 +73,6 @@ public abstract class LieuLectureCSV {
 				}
 
 			}
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -197,5 +188,4 @@ public abstract class LieuLectureCSV {
 		}
 		return l;
 	}
-
 }

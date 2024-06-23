@@ -10,9 +10,7 @@ import Application.Entites.Acteur;
 import Application.Entites.Lieu;
 import Application.Entites.Pays;
 import Application.Lecteurs.ActeurLectureCSV;
-import Application.Lecteurs.LieuLectureCSV;
 import Application.Lecteurs.PaysLectureCSV;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 public class TraitementDonnees {
@@ -28,7 +26,7 @@ public class TraitementDonnees {
 
 		
 		
-		// Insertion pays en bd
+		// Insertion des pays en base
 
 		Set<Pays> setPays = PaysLectureCSV.lireFichier();
 		transaction.begin();
@@ -36,43 +34,16 @@ public class TraitementDonnees {
 			paysDAO.insert(p);
 		}
 
-		// Insertion lieux en bd
-		Set<Lieu> setLieux = LieuLectureCSV.lireFichier();
 
-		for (Lieu l : setLieux) {
-			lieuDAO.insert(l);
-		}
-
-		// Insertion Acteurs en base
-
-//		Set<Acteur> setActeurs = ActeurLectureCSV.lireFichier();
-//	
-//		for (Acteur a : setActeurs) {
-//			
-//			Acteur acteur = a;
-//			Lieu lieu = new Lieu();
-//			 
-//			Lieu l = lieuDAO.findLieu(a.getLieuNaissance().getQuartier(), a.getLieuNaissance().getVille(), a.getLieuNaissance().getEtat());
-//			if (l == null) {
-//				lieu.setQuartier(a.getLieuNaissance().getQuartier());
-//				lieu.setVille(a.getLieuNaissance().getVille());
-//				lieu.setEtat(a.getLieuNaissance().getEtat());
-//				lieu.setPays(a.getLieuNaissance().getPays());
-//				lieuDAO.insert(lieu);
-//				acteur.setLieuNaissance(lieu);
-//			}
-//			
-//			acteur.setDateNaissance(a.getDateNaissance());
-//			acteur.setId(a.getId());
-//			acteur.setLieuNaissance(l);
-//			acteur.setTaille(a.getTaille());
-//			acteur.setIdentite(a.getIdentite());
-//			acteur.setUrl(a.getUrl());
-//			
-//			acteurDAO.insert(acteur);
-////			System.out.println(a.getLieuNaissance().getQuartier() + " " + a.getLieuNaissance().getVille() + " " + a.getLieuNaissance().getEtat());
-//		}
+		ActeurLieuSets acteurLieuSets = ActeurLectureCSV.lireFichier();
 		
+
+		// Insertion des acteurs en base
+		Set<Acteur> setActeurs = acteurLieuSets.getActeurs();
+		for (Acteur a : setActeurs) {
+		    acteurDAO.insert(a);
+		}
+	
 		
 		transaction.commit();
 		
