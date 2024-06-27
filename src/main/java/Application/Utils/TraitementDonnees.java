@@ -26,28 +26,28 @@ public class TraitementDonnees {
 	public static void main(String[] args) {
 
 		
+		transaction.begin();
 		
 		// Insertion des pays en base
 
-//		Set<Pays> setPays = PaysLectureCSV.lireFichier();
-		transaction.begin();
-//		for (Pays p : setPays) {
-//			paysDAO.insert(p);
-//		}
+		Set<Pays> setPays = PaysLectureCSV.lireFichier();
+		for (Pays p : setPays) {
+			paysDAO.insert(p);
+		}
 
-
-		Set<ActeurLieu> acteurLieuSets = ActeurLectureCSV.lireFichier();
-		
-
-		// Insertion des acteurs en base
-//		Set<Acteur> setActeurs = ((Lieu) acteurLieuSets).getActeurs();
-//		for (Acteur a : setActeurs) {
-//			
-//		    acteurDAO.insert(a);
-//		}
-	
-		
 		transaction.commit();
+
+//		Set<Acteur> acteurLieuSets = ActeurLectureCSV.lireFichier();
+		
+		transaction.begin();
+		// Insertion des acteurs en base
+		Set<Acteur> setActeurs = ActeurLectureCSV.lireFichier();
+		for (Acteur a : setActeurs) {
+		   System.out.println(a);
+			acteurDAO.insert(a);
+		}
+		transaction.commit();
+	
 		
 		
 		

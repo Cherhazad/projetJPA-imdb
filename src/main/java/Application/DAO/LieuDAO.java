@@ -17,7 +17,7 @@ import jakarta.persistence.TypedQuery;
 public class LieuDAO implements GenericDAO<Lieu> {
 
 	Set<Lieu> setLieux = new HashSet<>();
-	public static final PaysDAO paysDAO = DaoLien.paysDao();
+//	public static final PaysDAO paysDAO = DaoLien.paysDao();
 	private EntityManager em = DaoLien.em;
 	private EntityTransaction transaction = DaoLien.transaction;
 

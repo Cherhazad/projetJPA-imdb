@@ -5,7 +5,6 @@ import java.util.Set;
 
 import Application.Entites.Acteur;
 import Application.Utils.DaoLien;
-import Application.Utils.JPAConnexion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
@@ -23,7 +22,7 @@ public class ActeurDAO implements GenericDAO<Acteur> {
 	 * 
 	 * @param em
 	 */
-	public ActeurDAO(EntityManager em) { 
+	public ActeurDAO(EntityManager em) {
 		this.setActeurs = findAll();
 	}
 
@@ -39,7 +38,8 @@ public class ActeurDAO implements GenericDAO<Acteur> {
 	 * @return
 	 */
 	public Set<Acteur> findAll() {
-		TypedQuery<Acteur> query = em.createQuery("select a from Acteur a JOIN FETCH a.lieuNaissance l JOIN FETCH l.pays p", Acteur.class);
+		TypedQuery<Acteur> query = em
+				.createQuery("select a from Acteur a JOIN FETCH a.lieuNaissance l JOIN FETCH l.pays p", Acteur.class);
 		setActeurs = new HashSet<>(query.getResultList());
 
 		return setActeurs;
@@ -63,7 +63,5 @@ public class ActeurDAO implements GenericDAO<Acteur> {
 				throw e;
 			}
 		}
-
 	}
-
 }
