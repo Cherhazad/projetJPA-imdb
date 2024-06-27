@@ -19,27 +19,34 @@ import Application.DAO.ActeurDAO;
 import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
 import Application.Entites.Acteur;
+import Application.Entites.ActeurLieu;
 import Application.Entites.Lieu;
-import Application.Utils.ActeurLieuSets;
 import Application.Utils.DaoLien;
+import jakarta.persistence.EntityTransaction;
 
 public class ActeurLectureCSV {
 
 	public static final PaysDAO paysDAO = DaoLien.paysDao();
 	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
 	public static final ActeurDAO acteurDAO = DaoLien.acteurDao();
+//	private static EntityTransaction transaction = DaoLien.transaction;
 
-	public static ActeurLieuSets lireFichier() {
+	public static Set<ActeurLieu> lireFichier() {
 
 		Set<Acteur> setActeurs = new HashSet<>();
 		Set<Lieu> setLieux = new HashSet<>();
+		
+		Set<ActeurLieu> acteurLieuSets = new HashSet<>();
+		
 
 		Path path = Paths.get("src/main/resources/acteurs.csv");
 
 		try {
 			List<String> lignes = Files.readAllLines(path);
 			lignes.remove(0);
+			
 
+//			transaction.begin();
 			for (String ligne : lignes) {
 
 				String[] elementsActeurs = ligne.split(";");
@@ -50,30 +57,47 @@ public class ActeurLectureCSV {
 
 				
 				// ajout date de Naissance
-//				LocalDate date = parseDate(elementsActeurs[2]);
-//				a.setDateNaissance(date);
+				LocalDate date = parseDate(elementsActeurs[2]);
+				a.setDateNaissance(date);
 
 				// association lieu
 
+				
 				String elementsLieux = elementsActeurs[3];
-				Lieu l = new Lieu();
-				l = LieuLectureCSV.splitLieux(elementsLieux);
-				lieuDAO.insert(l);
-				setLieux.add(l);
-				a.setLieuNaissance(l);
+				Lieu l = LieuLectureCSV.splitLieux(elementsLieux);
+				
+				if (l == null) {
+					continue;
+				} else {					
+					lieuDAO.insert(l);
+					setLieux.add(l);
+					a.setLieuNaissance(l);
+				}
+				
+				// association taille
 
 				String tailleString = elementsActeurs[4].replace(",",".").replace(" m", "").trim();
 				if (!tailleString.isEmpty()) {
 					Double taille = Double.parseDouble(tailleString);
 					a.setTaille(taille);
+				} else {
+					continue;
 				}
 
 				a.setUrl(elementsActeurs[5]);
 
+				// Mise à jour du Set d'Acteur s'il n'existe pas en base
 				if (!acteurDAO.ifActeurExists(a)) {
 					setActeurs.add(a);
+					acteurDAO.insert(a);
 				}
+				
+				 // Ajout des acteurs et lieux dans acteurLieuSets
+                acteurLieuSets.add(new ActeurLieu(a));
+                acteurLieuSets.add(new ActeurLieu(l));
+				System.out.println(a);
 			}
+//			transaction.commit();
 
 		} catch (
 
@@ -81,7 +105,8 @@ public class ActeurLectureCSV {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new ActeurLieuSets(setActeurs, setLieux);
+		
+		return acteurLieuSets;
 
 	}
 

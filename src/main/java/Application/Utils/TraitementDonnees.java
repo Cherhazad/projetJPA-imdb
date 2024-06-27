@@ -7,6 +7,7 @@ import Application.DAO.LangueDAO;
 import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
 import Application.Entites.Acteur;
+import Application.Entites.ActeurLieu;
 import Application.Entites.Lieu;
 import Application.Entites.Pays;
 import Application.Lecteurs.ActeurLectureCSV;
@@ -28,21 +29,22 @@ public class TraitementDonnees {
 		
 		// Insertion des pays en base
 
-		Set<Pays> setPays = PaysLectureCSV.lireFichier();
+//		Set<Pays> setPays = PaysLectureCSV.lireFichier();
 		transaction.begin();
-		for (Pays p : setPays) {
-			paysDAO.insert(p);
-		}
+//		for (Pays p : setPays) {
+//			paysDAO.insert(p);
+//		}
 
 
-		ActeurLieuSets acteurLieuSets = ActeurLectureCSV.lireFichier();
+		Set<ActeurLieu> acteurLieuSets = ActeurLectureCSV.lireFichier();
 		
 
 		// Insertion des acteurs en base
-		Set<Acteur> setActeurs = acteurLieuSets.getActeurs();
-		for (Acteur a : setActeurs) {
-		    acteurDAO.insert(a);
-		}
+//		Set<Acteur> setActeurs = ((Lieu) acteurLieuSets).getActeurs();
+//		for (Acteur a : setActeurs) {
+//			
+//		    acteurDAO.insert(a);
+//		}
 	
 		
 		transaction.commit();
