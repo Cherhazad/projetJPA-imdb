@@ -1,9 +1,6 @@
-package Application.Utils;
+package Application.DAO;
 
-import Application.DAO.ActeurDAO;
-import Application.DAO.LangueDAO;
-import Application.DAO.LieuDAO;
-import Application.DAO.PaysDAO;
+import Application.Utils.JPAConnexion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 

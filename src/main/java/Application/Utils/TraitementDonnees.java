@@ -3,12 +3,11 @@ package Application.Utils;
 import java.util.Set;
 
 import Application.DAO.ActeurDAO;
+import Application.DAO.DaoLien;
 import Application.DAO.LangueDAO;
 import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
 import Application.Entites.Acteur;
-import Application.Entites.ActeurLieu;
-import Application.Entites.Lieu;
 import Application.Entites.Pays;
 import Application.Lecteurs.ActeurLectureCSV;
 import Application.Lecteurs.PaysLectureCSV;
@@ -20,14 +19,13 @@ public class TraitementDonnees {
 	public static final PaysDAO paysDAO = DaoLien.paysDao();
 	public static final LangueDAO langueDAO = DaoLien.langueDao();
 	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
-	
+
 	private static EntityTransaction transaction = DaoLien.transaction;
 
 	public static void main(String[] args) {
 
-		
 		transaction.begin();
-		
+
 		// Insertion des pays en base
 
 		Set<Pays> setPays = PaysLectureCSV.lireFichier();
@@ -37,20 +35,20 @@ public class TraitementDonnees {
 
 		transaction.commit();
 
-//		Set<Acteur> acteurLieuSets = ActeurLectureCSV.lireFichier();
-		
+
 		transaction.begin();
 		// Insertion des acteurs en base
 		Set<Acteur> setActeurs = ActeurLectureCSV.lireFichier();
 		for (Acteur a : setActeurs) {
-		   System.out.println(a);
+			System.out.println(a);
 			acteurDAO.insert(a);
 		}
 		transaction.commit();
-	
-		
-		
-		
+
+//		String date = "July 30";
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d", Locale.ENGLISH);
+//		System.out.println(MonthDay.parse(date, formatter));
+
 		// Insertion langues en base de données
 
 //			Set<Langue> listeLangues = LangueLectureCSV.lireFichier();

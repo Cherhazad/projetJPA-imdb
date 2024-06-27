@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Application.Entites.Langue;
-import Application.Utils.DaoLien;
 import Application.Utils.JPAConnexion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
