@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Application.Entites.Pays;
-import Application.Utils.JPAConnexion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
@@ -51,13 +50,18 @@ public class PaysDAO implements GenericDAO<Pays> {
 		return setPays.stream().anyMatch(l -> l.getNom().equalsIgnoreCase(pays.getNom()));
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void insert(Pays pays) {
 
 		if (!ifPaysExists(pays)) {
 			try {
+				transaction.begin();
 				em.persist(pays);
 				setPays.add(pays);
+				transaction.commit();
 			} catch (RuntimeException e) {
 				if (transaction.isActive()) {
 					transaction.rollback();

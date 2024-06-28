@@ -53,8 +53,10 @@ public class ActeurDAO implements GenericDAO<Acteur> {
 
 		if (!ifActeurExists(acteur)) {
 			try {
+				transaction.begin();
 				em.persist(acteur);
 				setActeurs.add(acteur);
+				transaction.commit();
 			} catch (RuntimeException e) {
 				if (transaction.isActive()) {
 					transaction.rollback();

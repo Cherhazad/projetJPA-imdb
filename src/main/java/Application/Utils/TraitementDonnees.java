@@ -11,7 +11,6 @@ import Application.Entites.Acteur;
 import Application.Entites.Pays;
 import Application.Lecteurs.ActeurLectureCSV;
 import Application.Lecteurs.PaysLectureCSV;
-import jakarta.persistence.EntityTransaction;
 
 public class TraitementDonnees {
 
@@ -20,11 +19,7 @@ public class TraitementDonnees {
 	public static final LangueDAO langueDAO = DaoLien.langueDao();
 	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
 
-	private static EntityTransaction transaction = DaoLien.transaction;
-
 	public static void main(String[] args) {
-
-		transaction.begin();
 
 		// Insertion des pays en base
 
@@ -33,21 +28,11 @@ public class TraitementDonnees {
 			paysDAO.insert(p);
 		}
 
-		transaction.commit();
-
-
-		transaction.begin();
 		// Insertion des acteurs en base
 		Set<Acteur> setActeurs = ActeurLectureCSV.lireFichier();
 		for (Acteur a : setActeurs) {
-			System.out.println(a);
 			acteurDAO.insert(a);
 		}
-		transaction.commit();
-
-//		String date = "July 30";
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d", Locale.ENGLISH);
-//		System.out.println(MonthDay.parse(date, formatter));
 
 		// Insertion langues en base de données
 
@@ -60,5 +45,4 @@ public class TraitementDonnees {
 		// Insertion
 
 	}
-
 }

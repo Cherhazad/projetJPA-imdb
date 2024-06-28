@@ -1,6 +1,6 @@
 package Application.Entites;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +30,7 @@ public class Acteur {
 
 	/** dateNaissance **/
 	@Column(name = "DATE_NAISSANCE")
-	private LocalDate dateNaissance;
+	private Date dateNaissance;
 
 	/** taille **/
 	@Column(name = "TAILLE")
@@ -70,7 +70,7 @@ public class Acteur {
 	 * @param taille
 	 * @param url
 	 */
-	public Acteur(String id, String identite, LocalDate dateNaissance, double taille, String url) {
+	public Acteur(String id, String identite, Date dateNaissance, double taille, String url) {
 		this.id = id;
 		this.identite = identite;
 		this.dateNaissance = dateNaissance;
@@ -119,17 +119,17 @@ public class Acteur {
 	 * 
 	 * @return the dateNaissance
 	 */
-	public LocalDate getDateNaissance() {
+	public Date getDateNaissance() {
 		return dateNaissance;
 	}
 
 	/**
 	 * Setter pour dateNaissance
 	 * 
-	 * @param dateNaissance the dateNaissance to set
+	 * @param date the dateNaissance to set
 	 */
-	public void setDateNaissance(LocalDate dateNaissance) {
-		this.dateNaissance = dateNaissance;
+	public void setDateNaissance(Date date) {
+		this.dateNaissance = date;
 	}
 
 	/**
