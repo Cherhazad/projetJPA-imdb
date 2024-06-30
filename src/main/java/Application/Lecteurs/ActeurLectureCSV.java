@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,89 +15,73 @@ import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
 import Application.Entites.Acteur;
 import Application.Entites.Lieu;
+import Application.Utils.DateUtils;
 
 public class ActeurLectureCSV {
 
-	public static final PaysDAO paysDAO = DaoLien.paysDao();
-	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
-	public static final ActeurDAO acteurDAO = DaoLien.acteurDao();
-//	private static EntityTransaction transaction = DaoLien.transaction;
+    public static final PaysDAO paysDAO = DaoLien.paysDao();
+    public static final LieuDAO lieuDAO = DaoLien.lieuDao();
+    public static final ActeurDAO acteurDAO = DaoLien.acteurDao();
 
-	public static Set<Acteur> lireFichier() {
+    public static Set<Acteur> lireFichier() {
 
-		Set<Acteur> setActeurs = new HashSet<>();
-		Set<Lieu> setLieux = new HashSet<>();
+        Set<Acteur> setActeurs = new HashSet<>();
 
-		Path path = Paths.get("src/main/resources/acteurs.csv");
+        Path path = Paths.get("src/main/resources/acteurs.csv");
 
-		try {
-			List<String> lignes = Files.readAllLines(path);
-			lignes.remove(0);
+        try {
+            List<String> lignes = Files.readAllLines(path);
+            lignes.remove(0);
 
-			for (String ligne : lignes) {
+            for (String ligne : lignes) {
 
-				String[] elementsActeurs = ligne.split(";");
-//				List<String> elementsActeurs2 = new ArrayList<>(Arrays.asList(ligne.split(";")));
-				Acteur a = new Acteur();
+                String[] elementsActeurs = ligne.split(";");
+                Acteur a = new Acteur();
 
-				a.setId(elementsActeurs[0]);
-				a.setIdentite(elementsActeurs[1]);
+                // id acteur
+                String id = elementsActeurs[0];
+                
+                // identite acteur
+                String identite = elementsActeurs[1];
+               
+                // date de Naissance de l'acteur
+                LocalDate date = null;
+                try {
+                    if (elementsActeurs[2].split(" ").length != 0) {
+                        date = DateUtils.parseDate(elementsActeurs[2]);
+                    }
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    date = null;
+                }
+                
+                // lieu de naissance de l'acteur
+                String elementsLieux = elementsActeurs[3];
+                Lieu l = LieuLectureCSV.splitLieux(elementsLieux);
 
-				// ajout date de Naissance
-				
-//				Date date = null;
-//				try {
-//					if (elementsActeurs[2].split(" ").length != 0) {
-//						date = DateUtils.parseDate(elementsActeurs[2]);
-//					}
-//
-//				} catch (Exception e) {
-//					System.err.println(e.getMessage());
-//					date=null;
-//				}
+                // taille de l'acteur
+                String tailleString = elementsActeurs[4].replace(",", ".").split(" ")[0];
+                
+                // url de l'acteur
+                String url = elementsActeurs[5];
+                
 
-		
-//				a.setDateNaissance(date);
+                // Mise à jour du Set d'Acteur s'il n'existe pas en base
+                if (!acteurDAO.ifActeurExists(a)) {
+                    setActeurs.add(a);
+                }
+                
+                a.setId(id);
+                a.setIdentite(identite);
+                a.setDateNaissance(date);
+                a.setLieuNaissance(l);
+//              a.setTaille(tailleString); //TODO corriger bug dans le parsing
+                a.setUrl(url);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-				// association lieu
-
-				String elementsLieux = elementsActeurs[3];
-				Lieu l = LieuLectureCSV.splitLieux(elementsLieux);
-
-				if (l != null && !lieuDAO.ifLieuExists(l) && LieuLectureCSV.isValidLieu(l)) {
-					setLieux.add(l);
-					a.setLieuNaissance(l);
-				}
-
-				// association taille
-
-				String tailleString = elementsActeurs[4].replace(",", ".").split(" ")[0];
-//				elementsActeurs2.forEach((akjh) -> System.out.println(akjh));
-
-//				if (!tailleString.isEmpty()) {
-//					Double taille = Double.parseDouble(tailleString.split(" ")[0]);
-//					System.out.println(tailleString.split(" ")[0]);
-//					a.setTaille(taille);
-//				}
-
-				a.setUrl(elementsActeurs[5]);
-
-				// Mise à jour du Set d'Acteur s'il n'existe pas en base
-				if (!acteurDAO.ifActeurExists(a)) {
-					setActeurs.add(a);
-				}
-
-			}
-
-		} catch (
-
-		IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return setActeurs;
-
-	}
-
+        return setActeurs;
+    }
 }

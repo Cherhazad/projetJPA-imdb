@@ -13,7 +13,6 @@ import Application.DAO.DaoLien;
 import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
 import Application.Entites.Lieu;
-import Application.Entites.Pays;
 
 /** 
  * 
@@ -42,7 +41,7 @@ public abstract class LieuLectureCSV {
 			for (String ligne : limitedLignes2) {
 				String[] elements = ligne.split(";");
 				Lieu l = splitLieux(elements[3]);
-				if (!lieuDAO.ifLieuExists(l) && isValidLieu(l)) {
+				if (lieuDAO.findLieu(l.getQuartier(), l.getVille(), l.getEtat(), l.getPays()) == null && l != null) {
 					setLieux.add(l);
 				}
 
@@ -68,7 +67,7 @@ public abstract class LieuLectureCSV {
 
 				Lieu l = splitLieuxFilms(elements[5]);
 
-				if (!lieuDAO.ifLieuExists(l) && isValidLieu(l)) {
+				if (lieuDAO.findLieu(l.getQuartier(), l.getVille(), l.getEtat(), l.getPays()) == null && l != null) {
 					setLieux.add(l);
 				}
 
@@ -81,30 +80,6 @@ public abstract class LieuLectureCSV {
 
 	}
 
-	public static Pays verifPays(String nomPays) {
-		if (!nomPays.isEmpty()) {
-			if (nomPays.equals("USA")) {
-				nomPays = "United States";
-			}
-			if (nomPays.equals("UK")) {
-				nomPays = "United Kingdom";
-			}
-			Pays pays = paysDAO.findByName(nomPays);
-			if (pays == null) {
-				pays = new Pays();
-				pays.setNom(nomPays);
-				paysDAO.insert(pays);
-			}
-			return pays;
-		}
-		return null;
-	}
-
-	public static boolean isValidLieu(Lieu lieu) {
-		return (lieu.getPays() != null || (lieu.getVille() != null && !lieu.getVille().isEmpty())
-				|| (lieu.getEtat() != null && !lieu.getEtat().isEmpty())
-				|| (lieu.getQuartier() != null && !lieu.getQuartier().isEmpty()));
-	}
 
 	/**
 	 * Méthode dynamique qui permet, en fonction du nombre d'éléments qui composent
@@ -122,24 +97,24 @@ public abstract class LieuLectureCSV {
 
 		switch (elementsLieu.length) {
 		case 1:
-			l.setPays(verifPays(elementsLieu[0].trim()));
+			l.setPays(PaysLectureCSV.verifPays(elementsLieu[0].trim()));
 			break;
 
 		case 2:
 			l.setVille(elementsLieu[1].trim());
-			l.setPays(verifPays(elementsLieu[0].trim()));
+			l.setPays(PaysLectureCSV.verifPays(elementsLieu[0].trim()));
 			break;
 
 		case 3:
 			l.setVille(elementsLieu[2].trim());
 			l.setEtat(elementsLieu[1].trim());
-			l.setPays(verifPays(elementsLieu[0].trim()));
+			l.setPays(PaysLectureCSV.verifPays(elementsLieu[0].trim()));
 			break;
 		case 4:
 			l.setQuartier(elementsLieu[3].trim());
 			l.setVille(elementsLieu[2].trim());
 			l.setEtat(elementsLieu[1].trim());
-			l.setPays(verifPays(elementsLieu[0].trim()));
+			l.setPays(PaysLectureCSV.verifPays(elementsLieu[0].trim()));
 			break;
 		default:
 			break;
@@ -164,24 +139,24 @@ public abstract class LieuLectureCSV {
 		switch (elementsLieu.length) {
 
 		case 1:
-			l.setPays(verifPays(elementsLieu[0].trim()));
+			l.setPays(PaysLectureCSV.verifPays(elementsLieu[0].trim()));
 			break;
 
 		case 2:
 			l.setVille(elementsLieu[0].trim());
-			l.setPays(verifPays(elementsLieu[1].trim()));
+			l.setPays(PaysLectureCSV.verifPays(elementsLieu[1].trim()));
 			break;
 
 		case 3:
 			l.setVille(elementsLieu[0].trim());
 			l.setEtat(elementsLieu[1].trim());
-			l.setPays(verifPays(elementsLieu[2].trim()));
+			l.setPays(PaysLectureCSV.verifPays(elementsLieu[2].trim()));
 			break;
 		case 4:
 			l.setQuartier(elementsLieu[0].trim());
 			l.setVille(elementsLieu[1].trim());
 			l.setEtat(elementsLieu[2].trim());
-			l.setPays(verifPays(elementsLieu[3].trim()));
+			l.setPays(PaysLectureCSV.verifPays(elementsLieu[3].trim()));
 			break;
 		default:
 			break;

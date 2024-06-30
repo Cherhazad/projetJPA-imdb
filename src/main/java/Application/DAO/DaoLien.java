@@ -14,8 +14,8 @@ public abstract class DaoLien {
 	
 	static JPAConnexion connexionJPA = new JPAConnexion();
 	
-	public static EntityManager em = connexionJPA.getEntityManager();
-	public static EntityTransaction transaction = em.getTransaction();
+	public static final EntityManager em = connexionJPA.getEntityManager();
+	public static final EntityTransaction transaction = em.getTransaction();
 
 	public static PaysDAO paysDao() {
 		return new PaysDAO(em);

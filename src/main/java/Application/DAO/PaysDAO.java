@@ -4,23 +4,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Application.Entites.Pays;
+import Application.Utils.JPAConnexion;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 
 /**
  * 
  */
 public class PaysDAO implements GenericDAO<Pays> {
-	
+
 	Set<Pays> setPays = new HashSet<>();
-	private EntityManager em = DaoLien.em;
-	private EntityTransaction transaction = DaoLien.transaction;
 
 	/**
 	 * Constructeur
 	 */
-	public PaysDAO(EntityManager em) { 
+	public PaysDAO(EntityManager em) {
 		this.setPays = findAll();
 	}
 
@@ -28,7 +26,7 @@ public class PaysDAO implements GenericDAO<Pays> {
 	 * @return
 	 */
 	public Set<Pays> findAll() {
-		TypedQuery<Pays> query = em.createQuery("SELECT p FROM Pays p", Pays.class);
+		TypedQuery<Pays> query = JPAConnexion.getEntityManager().createQuery("SELECT p FROM Pays p", Pays.class);
 		setPays = new HashSet<>(query.getResultList());
 
 		return setPays;
@@ -47,7 +45,10 @@ public class PaysDAO implements GenericDAO<Pays> {
 	 * @return
 	 */
 	public boolean ifPaysExists(Pays pays) {
-		return setPays.stream().anyMatch(l -> l.getNom().equalsIgnoreCase(pays.getNom()));
+		if (pays == null || pays.getNom() == null) {
+			return false;
+		}
+		return setPays.stream().anyMatch(l -> l != null && l.getNom().equalsIgnoreCase(pays.getNom()));
 	}
 
 	/**
@@ -56,20 +57,9 @@ public class PaysDAO implements GenericDAO<Pays> {
 	@Override
 	public void insert(Pays pays) {
 
-		if (!ifPaysExists(pays)) {
-			try {
-				transaction.begin();
-				em.persist(pays);
-				setPays.add(pays);
-				transaction.commit();
-			} catch (RuntimeException e) {
-				if (transaction.isActive()) {
-					transaction.rollback();
-				}
-				throw e;
-			}
+		JPAConnexion.persist(pays);
+		setPays.add(pays);
 
-		}
 	}
 
 }

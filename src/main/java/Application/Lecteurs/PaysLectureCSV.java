@@ -7,13 +7,11 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import Application.DAO.DaoLien;
 import Application.DAO.LangueDAO;
 import Application.DAO.LieuDAO;
 import Application.DAO.PaysDAO;
-import Application.Entites.Lieu;
 import Application.Entites.Pays;
 
 public class PaysLectureCSV {
@@ -50,6 +48,24 @@ public class PaysLectureCSV {
 		}
 		return setPays;
 
+	}
+	
+	public static Pays verifPays(String nomPays) {
+		if (!nomPays.isEmpty()) {
+			if (nomPays.equals("USA")) {
+				nomPays = "United States";
+			}
+			if (nomPays.equals("UK")) {
+				nomPays = "United Kingdom";
+			}
+			Pays pays = paysDAO.findByName(nomPays);
+			if (pays == null) {
+				pays = new Pays();
+				pays.setNom(nomPays);
+			}
+			return pays;
+		}
+		return null;
 	}
 	
 }

@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Application.Entites.Acteur;
+import Application.Utils.JPAConnexion;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 
 public class ActeurDAO implements GenericDAO<Acteur> {
@@ -13,8 +13,6 @@ public class ActeurDAO implements GenericDAO<Acteur> {
 	Set<Acteur> setActeurs = new HashSet<>();
 	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
 	public static final PaysDAO paysDAO = DaoLien.paysDao();
-	private EntityManager em = DaoLien.em;
-	private EntityTransaction transaction = DaoLien.transaction;
 
 	/**
 	 * Constructeur
@@ -25,22 +23,14 @@ public class ActeurDAO implements GenericDAO<Acteur> {
 		this.setActeurs = findAll();
 	}
 
-	/**
-	 * @param id
-	 * @return
-	 */
 	public Acteur findById(String id) {
 		return setActeurs.stream().filter(acteur -> acteur.getId().equals(id)).findFirst().orElse(null);
 	}
 
-	/**
-	 * @return
-	 */
 	public Set<Acteur> findAll() {
-		TypedQuery<Acteur> query = em
+		TypedQuery<Acteur> query = JPAConnexion.getEntityManager()
 				.createQuery("select a from Acteur a JOIN FETCH a.lieuNaissance l JOIN FETCH l.pays p", Acteur.class);
 		setActeurs = new HashSet<>(query.getResultList());
-
 		return setActeurs;
 	}
 
@@ -52,17 +42,8 @@ public class ActeurDAO implements GenericDAO<Acteur> {
 	public void insert(Acteur acteur) {
 
 		if (!ifActeurExists(acteur)) {
-			try {
-				transaction.begin();
-				em.persist(acteur);
-				setActeurs.add(acteur);
-				transaction.commit();
-			} catch (RuntimeException e) {
-				if (transaction.isActive()) {
-					transaction.rollback();
-				}
-				throw e;
-			}
+			JPAConnexion.persist(acteur);
+			setActeurs.add(acteur);
 		}
 	}
 }

@@ -19,9 +19,11 @@ public class TraitementDonnees {
 	public static final LangueDAO langueDAO = DaoLien.langueDao();
 	public static final LieuDAO lieuDAO = DaoLien.lieuDao();
 
+
 	public static void main(String[] args) {
 
 		// Insertion des pays en base
+
 
 		Set<Pays> setPays = PaysLectureCSV.lireFichier();
 		for (Pays p : setPays) {
@@ -33,6 +35,7 @@ public class TraitementDonnees {
 		for (Acteur a : setActeurs) {
 			acteurDAO.insert(a);
 		}
+
 
 		// Insertion langues en base de données
 
